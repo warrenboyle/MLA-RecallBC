@@ -406,7 +406,7 @@
                 { name: "Josie Osborne", riding: "Mid Island-Pacific Rim" },
                 { name: "Niki Sharma", riding: "Vancouver-Hastings" },
                 { name: "Jagrup Brar", riding: "Surrey-Fleetwood" },
-                { name: "Bob D'Eith", riding: "Maple Ridge-Mission" },
+                { name: "Bob DEith", riding: "Maple Ridge-Mission" },
                 { name: "Fin Donnelly", riding: "Coquitlam-Burke Mountain" },
                 { name: "Jodie Wickens", riding: "Coquitlam-Maillardville" },
                 { name: "Susie Chant", riding: "North Vancouver-Seymour" },
@@ -438,7 +438,7 @@
                 { name: "Elenore Sturko", riding: "Surrey-Cloverdale" },
                 { name: "Teresa Wat", riding: "Richmond-Bridgeport" },
                 { name: "Lorne Doerkson", riding: "Cariboo-Chilcotin" },
-                { name: "Á'a:líya Warbus", riding: "Chilliwack-Cultus Lake" },
+                { name: "Aaliya Warbus", riding: "Chilliwack-Cultus Lake" },
                 { name: "Kiel Giddens", riding: "Prince George-Mackenzie" },
                 { name: "Sheldon Clare", riding: "Prince George-North Cariboo" },
                 { name: "Rosalyn Bird", riding: "Prince George-Valemount" },
@@ -521,8 +521,13 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        // Start countdown immediately
+        try {
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        } catch(e) {
+            console.error('Countdown error:', e);
+        }
         
         // API Functions
         async function loadVotes() {
@@ -685,24 +690,33 @@
         
         // Initialize
         async function init() {
-            // Show MLAs immediately, don't wait for backend
-            renderMLAGrid();
-            renderLeaderboard();
-            updateCooldownNotice();
-            
-            // Then try to load votes from backend
-            if (isConfigured) {
-                try {
-                    await loadVotes();
-                    renderMLAGrid();
-                    renderLeaderboard();
-                } catch (e) {
-                    console.log('Backend not available, using local only');
+            try {
+                // Show MLAs immediately, don't wait for backend
+                renderMLAGrid();
+                renderLeaderboard();
+                updateCooldownNotice();
+                
+                // Then try to load votes from backend
+                if (isConfigured) {
+                    try {
+                        await loadVotes();
+                        renderMLAGrid();
+                        renderLeaderboard();
+                    } catch (e) {
+                        console.log('Backend not available, using local only');
+                    }
                 }
+            } catch(e) {
+                console.error('Init error:', e);
             }
         }
         
-        init();
+        // Run init when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
