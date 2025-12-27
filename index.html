@@ -377,7 +377,6 @@
         // CONFIGURATION - UPDATE THIS URL AFTER SETUP
         // =====================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU2vj_QH2ratoPVeWXVrYbJRfvGpMedh5Xi22rYukItEfQ4/exec';
-';
         // =====================================================
         
         // MLA Data organized by party
@@ -686,10 +685,21 @@
         
         // Initialize
         async function init() {
-            await loadVotes();
+            // Show MLAs immediately, don't wait for backend
             renderMLAGrid();
             renderLeaderboard();
             updateCooldownNotice();
+            
+            // Then try to load votes from backend
+            if (isConfigured) {
+                try {
+                    await loadVotes();
+                    renderMLAGrid();
+                    renderLeaderboard();
+                } catch (e) {
+                    console.log('Backend not available, using local only');
+                }
+            }
         }
         
         init();
