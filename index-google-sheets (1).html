@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BC Recall Countdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .countdown-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #e94560;
+            font-size: 1.3rem;
+        }
+        
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(145deg, #1e2a4a, #162038);
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+        
+        .countdown-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .target-date {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 1.8rem; }
+            .countdown-number { font-size: 2rem; }
+        }
+        
+        .voting-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .party-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .party-tab {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+        
+        .party-tab.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .party-tab.ndp { background: #f97316; color: white; }
+        .party-tab.conservative { background: #3b82f6; color: white; }
+        .party-tab.green { background: #22c55e; color: white; }
+        .party-tab.independent { background: #8b5cf6; color: white; }
+        .party-tab.onebc { background: #ec4899; color: white; }
+        
+        .mla-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .mla-grid::-webkit-scrollbar { width: 8px; }
+        .mla-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        .mla-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+        
+        .mla-btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        
+        .mla-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .mla-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .mla-btn .votes {
+            background: rgba(233, 69, 96, 0.3);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            min-width: 35px;
+            text-align: center;
+        }
+        
+        .leaderboard-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .leaderboard-item:hover { background: rgba(255, 255, 255, 0.1); }
+        
+        .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 35px;
+            text-align: center;
+        }
+        
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        
+        .leader-info { flex: 1; }
+        .leader-name { font-weight: 600; margin-bottom: 2px; }
+        .leader-party { font-size: 0.8rem; color: #94a3b8; }
+        .leader-votes { font-size: 1.2rem; font-weight: bold; color: #e94560; }
+        
+        .party-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .party-badge.ndp { background: #f97316; }
+        .party-badge.conservative { background: #3b82f6; }
+        .party-badge.green { background: #22c55e; }
+        .party-badge.independent { background: #8b5cf6; }
+        .party-badge.onebc { background: #ec4899; }
+        
+        .cooldown-notice {
+            text-align: center;
+            padding: 15px;
+            background: rgba(233, 69, 96, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .info-box {
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .info-box h4 { margin-bottom: 10px; color: #60a5fa; }
+        
+        .total-votes {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .loading, .empty-leaderboard {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+        }
+        
+        .setup-warning {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .setup-warning h3 { color: #fbbf24; margin-bottom: 10px; }
+        .setup-warning code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗳️ BC MLA Recall Countdown</h1>
+            <p class="subtitle">Track the countdown and vote for which MLA you'd most like to see recalled</p>
+        </header>
+        
+        <!-- Setup warning - will hide once configured -->
+        <div class="setup-warning" id="setup-warning" style="display: none;">
+            <h3>⚠️ Setup Required</h3>
+            <p>To enable voting, you need to set up the Google Sheets backend.<br>
+            See the instructions in <code>google-apps-script.js</code> and update the <code>SCRIPT_URL</code> below.</p>
+        </div>
+        
+        <section class="countdown-section">
+            <h2 class="countdown-title">⏱️ Time Until Recall Petitions Can Begin</h2>
+            <div class="countdown-grid" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">---</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">--</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">--</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">--</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+            <p class="target-date">Target Date: <strong>April 20, 2026</strong> (18 months after the Oct 19, 2024 election)</p>
+        </section>
+        
+        <div class="main-content">
+            <section class="voting-section">
+                <h2 class="section-title">🎯 Vote for MLA to Recall</h2>
+                
+                <div class="cooldown-notice" id="cooldown-notice">
+                    ⏳ Please wait <span id="cooldown-time">60</span> seconds before voting again
+                </div>
+                
+                <div class="party-tabs" id="party-tabs">
+                    <button class="party-tab ndp active" data-party="ndp">NDP (47)</button>
+                    <button class="party-tab conservative" data-party="conservative">Conservative (39)</button>
+                    <button class="party-tab green" data-party="green">Green (2)</button>
+                    <button class="party-tab independent" data-party="independent">Independent (3)</button>
+                    <button class="party-tab onebc" data-party="onebc">OneBC (2)</button>
+                </div>
+                
+                <div class="mla-grid" id="mla-grid">
+                    <div class="loading">Loading MLAs...</div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>ℹ️ About BC Recall Elections</h4>
+                    <p>Under BC's Recall and Initiative Act, voters can petition to recall their MLA after 18 months from the election. A successful petition requires signatures from 40% of registered voters in that riding within 60 days. No MLA has ever been successfully recalled in BC history.</p>
+                </div>
+            </section>
+            
+            <section class="leaderboard-section">
+                <h2 class="section-title">🏆 Top 10 to Recall</h2>
+                <div id="leaderboard">
+                    <div class="loading">Loading leaderboard...</div>
+                </div>
+                <div class="total-votes" id="total-votes"></div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // =====================================================
+        // CONFIGURATION - UPDATE THIS URL AFTER SETUP
+        // =====================================================
+        const SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+        // =====================================================
+        
+        // MLA Data organized by party
+        const MLAs = {
+            ndp: [
+                { name: "David Eby", riding: "Vancouver-Point Grey" },
+                { name: "Adrian Dix", riding: "Vancouver-Renfrew" },
+                { name: "Mike Farnworth", riding: "Port Coquitlam" },
+                { name: "Brenda Bailey", riding: "Vancouver-South Granville" },
+                { name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows" },
+                { name: "Garry Begg", riding: "Surrey-Guildford" },
+                { name: "Raj Chouhan", riding: "Burnaby-New Westminster" },
+                { name: "Ravi Kahlon", riding: "Delta North" },
+                { name: "Lana Popham", riding: "Saanich South" },
+                { name: "Anne Kang", riding: "Burnaby-Deer Lake" },
+                { name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island" },
+                { name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam" },
+                { name: "Grace Lore", riding: "Victoria-Beacon Hill" },
+                { name: "Bowinn Ma", riding: "North Vancouver-Lonsdale" },
+                { name: "Brittny Anderson", riding: "Kootenay Central" },
+                { name: "Rick Glumac", riding: "Port Moody-Burquitlam" },
+                { name: "Kelly Greene", riding: "Richmond-Steveston" },
+                { name: "Spencer Chandra Herbert", riding: "Vancouver-West End" },
+                { name: "Ravi Parmar", riding: "Langford-Highlands" },
+                { name: "Mable Elmore", riding: "Vancouver-Kensington" },
+                { name: "Janet Routledge", riding: "Burnaby North" },
+                { name: "Josie Osborne", riding: "Mid Island-Pacific Rim" },
+                { name: "Niki Sharma", riding: "Vancouver-Hastings" },
+                { name: "Jagrup Brar", riding: "Surrey-Fleetwood" },
+                { name: "Bob D'Eith", riding: "Maple Ridge-Mission" },
+                { name: "Fin Donnelly", riding: "Coquitlam-Burke Mountain" },
+                { name: "Jodie Wickens", riding: "Coquitlam-Maillardville" },
+                { name: "Susie Chant", riding: "North Vancouver-Seymour" },
+                { name: "George Anderson", riding: "Victoria-Swan Lake" },
+                { name: "Jessie Sunner", riding: "Surrey-Serpentine River" },
+                { name: "Jennifer Blatherwick", riding: "North Coast-Haida Gwaii" },
+                { name: "Amna Shah", riding: "Surrey-City Centre" },
+                { name: "Paul Choi", riding: "Burnaby East" },
+                { name: "Sunita Dhir", riding: "Surrey-Newton" },
+                { name: "Nina Krieger", riding: "Vancouver-Fraserview" },
+                { name: "Stephanie Higginson", riding: "Ladysmith-Oceanside" },
+                { name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat" },
+                { name: "Diana Gibson", riding: "Oak Bay-Gordon Head" },
+                { name: "Joan Phillip", riding: "Vancouver-Mount Pleasant" },
+                { name: "Darlene Rotchford", riding: "Esquimalt-Colwood" },
+                { name: "Christine Boyle", riding: "Vancouver-Little Mountain" },
+                { name: "George Heyman", riding: "Vancouver-Fairview" },
+                { name: "Henry Yao", riding: "Richmond-Queensborough" },
+                { name: "Randene Neill", riding: "Powell River-Sunshine Coast" },
+                { name: "Jessie Dhaliwal", riding: "Surrey-Panorama" },
+                { name: "Jenn Kramer", riding: "North Island" },
+                { name: "Donegal Wilson", riding: "Boundary-Similkameen" }
+            ],
+            conservative: [
+                { name: "John Rustad", riding: "Nechako Lakes" },
+                { name: "Trevor Halford", riding: "Surrey-White Rock" },
+                { name: "Peter Milobar", riding: "Kamloops-Centre" },
+                { name: "Bruce Banman", riding: "Abbotsford South" },
+                { name: "Elenore Sturko", riding: "Surrey-Cloverdale" },
+                { name: "Teresa Wat", riding: "Richmond-Bridgeport" },
+                { name: "Lorne Doerkson", riding: "Cariboo-Chilcotin" },
+                { name: "Á'a:líya Warbus", riding: "Chilliwack-Cultus Lake" },
+                { name: "Kiel Giddens", riding: "Prince George-Mackenzie" },
+                { name: "Sheldon Clare", riding: "Prince George-North Cariboo" },
+                { name: "Rosalyn Bird", riding: "Prince George-Valemount" },
+                { name: "Macklin McCall", riding: "West Kelowna-Peachland" },
+                { name: "Gavin Dew", riding: "Kelowna-Mission" },
+                { name: "Kristina Loewen", riding: "Kelowna Centre" },
+                { name: "Harman Bhangu", riding: "Langley-Walnut Grove" },
+                { name: "Misty Van Popta", riding: "Langley-Willowbrook" },
+                { name: "Brent Chapman", riding: "Surrey-South" },
+                { name: "Heather Maahs", riding: "Chilliwack North" },
+                { name: "Chuck Chicken", riding: "Fraser-Nicola" },
+                { name: "Ian Paton", riding: "Delta South" },
+                { name: "Mike de Jong", riding: "Abbotsford-Mission" },
+                { name: "Lawrence Mok", riding: "Richmond Centre" },
+                { name: "Korky Feeney", riding: "Kamloops-North Thompson" },
+                { name: "Amelia Boultbee", riding: "Salmon Arm-Shuswap" },
+                { name: "Tom Shypitka", riding: "Kootenay-Rockies" },
+                { name: "Claire Rathbone", riding: "Penticton-Summerland" },
+                { name: "Anna Kindy", riding: "Vernon-Lumby" },
+                { name: "Bryan Tepper", riding: "Courtenay-Comox" },
+                { name: "Stephen Fowler", riding: "Kelowna-Lake Country-Coldstream" },
+                { name: "Mike Bandstra", riding: "Abbotsford West" },
+                { name: "Dennis Giesbrecht", riding: "Mission-Agassiz" },
+                { name: "Larry Neufeld", riding: "Peace River North" },
+                { name: "Dan Baird", riding: "Columbia River-Trail" },
+                { name: "Conn Doheny", riding: "Parksville-Qualicum" },
+                { name: "Donnie Rosa", riding: "Skeena" },
+                { name: "Rohit Sandhu", riding: "Surrey-Green Timbers" },
+                { name: "Tony Luck", riding: "Vancouver-Langara" },
+                { name: "Tim Thielmann", riding: "Vernon-Monashee" },
+                { name: "John Wilson", riding: "Stikine-Terrace" }
+            ],
+            green: [
+                { name: "Jeremy Valeriote", riding: "West Vancouver-Sea to Sky" },
+                { name: "Rob Botterell", riding: "Saanich North and the Islands" }
+            ],
+            independent: [
+                { name: "John Koury", riding: "Peace River South" },
+                { name: "Karin Kirkpatrick", riding: "West Vancouver-Capilano" },
+                { name: "Kevin Falcon", riding: "Vancouver-Quilchena" }
+            ],
+            onebc: [
+                { name: "Dallas Brodie", riding: "Surrey East" },
+                { name: "Tara Armstrong", riding: "Kelowna-Centre" }
+            ]
+        };
+        
+        // State
+        let currentParty = 'ndp';
+        let votes = {};
+        let lastVoteTime = parseInt(localStorage.getItem('lastVoteTime') || '0');
+        const COOLDOWN_MS = 60000;
+        
+        // Check if script URL is configured
+        const isConfigured = SCRIPT_URL && !SCRIPT_URL.includes('PASTE_YOUR');
+        
+        // Countdown timer
+        const targetDate = new Date('2026-04-20T00:00:00-07:00');
+        
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // API Functions
+        async function loadVotes() {
+            if (!isConfigured) {
+                document.getElementById('setup-warning').style.display = 'block';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getVotes`);
+                const data = await response.json();
+                if (data.success) {
+                    votes = data.votes;
+                }
+            } catch (e) {
+                console.error('Error loading votes:', e);
+            }
+        }
+        
+        async function submitVote(mlaKey) {
+            if (!isConfigured) return;
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=vote&mla=${encodeURIComponent(mlaKey)}`);
+                const data = await response.json();
+                if (data.success) {
+                    votes[mlaKey] = data.votes;
+                }
+            } catch (e) {
+                console.error('Error submitting vote:', e);
+            }
+        }
+        
+        function getVoteKey(name, riding) {
+            return `${name}|${riding}`;
+        }
+        
+        function canVote() {
+            return Date.now() - lastVoteTime >= COOLDOWN_MS;
+        }
+        
+        function getCooldownRemaining() {
+            return Math.max(0, Math.ceil((COOLDOWN_MS - (Date.now() - lastVoteTime)) / 1000));
+        }
+        
+        // UI Functions
+        function renderMLAGrid() {
+            const grid = document.getElementById('mla-grid');
+            const mlas = MLAs[currentParty];
+            const votingDisabled = !canVote();
+            
+            grid.innerHTML = mlas.map(mla => {
+                const key = getVoteKey(mla.name, mla.riding);
+                const voteCount = votes[key] || 0;
+                return `
+                    <button class="mla-btn" onclick="vote('${mla.name.replace(/'/g, "\\'")}', '${mla.riding.replace(/'/g, "\\'")}')" ${votingDisabled ? 'disabled' : ''}>
+                        <span>${mla.name}</span>
+                        <span class="votes">${voteCount}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+        
+        function renderLeaderboard() {
+            const leaderboard = document.getElementById('leaderboard');
+            
+            const allMLAs = [];
+            Object.entries(MLAs).forEach(([party, mlas]) => {
+                mlas.forEach(mla => {
+                    const key = getVoteKey(mla.name, mla.riding);
+                    const voteCount = votes[key] || 0;
+                    if (voteCount > 0) {
+                        allMLAs.push({ ...mla, party, votes: voteCount });
+                    }
+                });
+            });
+            
+            allMLAs.sort((a, b) => b.votes - a.votes);
+            const top10 = allMLAs.slice(0, 10);
+            
+            if (top10.length === 0) {
+                leaderboard.innerHTML = '<div class="empty-leaderboard">No votes yet. Be the first to vote!</div>';
+                document.getElementById('total-votes').textContent = '';
+                return;
+            }
+            
+            leaderboard.innerHTML = top10.map((mla, index) => `
+                <div class="leaderboard-item">
+                    <span class="rank rank-${index + 1}">${index + 1}</span>
+                    <div class="leader-info">
+                        <div class="leader-name">${mla.name}</div>
+                        <div class="leader-party">
+                            <span class="party-badge ${mla.party}">${mla.party.toUpperCase()}</span>
+                            ${mla.riding}
+                        </div>
+                    </div>
+                    <div class="leader-votes">${mla.votes}</div>
+                </div>
+            `).join('');
+            
+            const totalVotes = Object.values(votes).reduce((sum, v) => sum + v, 0);
+            document.getElementById('total-votes').textContent = `Total votes cast: ${totalVotes}`;
+        }
+        
+        function updateCooldownNotice() {
+            const notice = document.getElementById('cooldown-notice');
+            const cooldownSpan = document.getElementById('cooldown-time');
+            
+            if (!canVote()) {
+                notice.style.display = 'block';
+                cooldownSpan.textContent = getCooldownRemaining();
+            } else {
+                notice.style.display = 'none';
+            }
+        }
+        
+        async function vote(name, riding) {
+            if (!canVote()) {
+                updateCooldownNotice();
+                return;
+            }
+            
+            const key = getVoteKey(name, riding);
+            
+            // Optimistic update
+            votes[key] = (votes[key] || 0) + 1;
+            lastVoteTime = Date.now();
+            localStorage.setItem('lastVoteTime', lastVoteTime.toString());
+            
+            renderMLAGrid();
+            renderLeaderboard();
+            updateCooldownNotice();
+            
+            // Submit to server
+            await submitVote(key);
+            
+            // Refresh from server
+            await loadVotes();
+            renderMLAGrid();
+            renderLeaderboard();
+        }
+        
+        // Party tab handling
+        document.getElementById('party-tabs').addEventListener('click', (e) => {
+            if (e.target.classList.contains('party-tab')) {
+                document.querySelectorAll('.party-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                currentParty = e.target.dataset.party;
+                renderMLAGrid();
+            }
+        });
+        
+        // Cooldown timer
+        setInterval(() => {
+            updateCooldownNotice();
+            if (canVote()) {
+                document.querySelectorAll('.mla-btn').forEach(btn => btn.disabled = false);
+            }
+        }, 1000);
+        
+        // Initialize
+        async function init() {
+            await loadVotes();
+            renderMLAGrid();
+            renderLeaderboard();
+            updateCooldownNotice();
+        }
+        
+        init();
+    </script>
+</body>
+</html>
