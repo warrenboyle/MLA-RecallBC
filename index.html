@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BC Recall Countdown</title>
+    <title>BC MLA Approval Tracker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { background-color: #1a1a2e; }
@@ -20,212 +19,251 @@
         h1 { font-size: 1.8rem; margin-bottom: 10px; color: #e94560; }
         h2 { color: #ffffff; font-size: 1.3rem; margin-bottom: 15px; }
         .subtitle { color: #94a3b8; font-size: 1rem; }
-
-```
-    .countdown-section {
-        background-color: #1e2a4a;
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 25px;
-    }
-    .countdown-title { text-align: center; margin-bottom: 20px; color: #e94560; font-size: 1.2rem; }
-    .countdown-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-    .countdown-item {
-        background-color: #162038;
-        padding: 15px 20px;
-        border-radius: 15px;
-        text-align: center;
-        min-width: 70px;
-    }
-    .countdown-number { font-size: 2rem; font-weight: bold; color: #e94560; }
-    .countdown-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
-    .target-date { text-align: center; margin-top: 15px; color: #94a3b8; font-size: 0.9rem; }
-    
-    .main-content { display: grid; grid-template-columns: 1fr; gap: 25px; }
-    @media (min-width: 900px) {
-        .main-content { grid-template-columns: 1fr 350px; }
-        h1 { font-size: 2.5rem; }
-        .countdown-number { font-size: 3rem; }
-    }
-    
-    .voting-section, .leaderboard-section {
-        background-color: #1e2a4a;
-        border-radius: 20px;
-        padding: 20px;
-    }
-    
-    .party-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-    .party-tab {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.6;
-    }
-    .party-tab.active { opacity: 1; }
-    .party-tab.ndp { background-color: #f97316; color: white; }
-    .party-tab.conservative { background-color: #3b82f6; color: white; }
-    .party-tab.green { background-color: #22c55e; color: white; }
-    .party-tab.independent { background-color: #8b5cf6; color: white; }
-    .party-tab.onebc { background-color: #ec4899; color: white; }
-    
-    .mla-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 8px;
-        max-height: 400px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .mla-btn {
-        padding: 10px 12px;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        text-align: left;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #2d3a5a;
-        color: #ffffff;
-    }
-    .mla-btn:disabled { opacity: 0.5; }
-    .mla-btn .name { flex: 1; color: #ffffff; }
-    .mla-btn .votes {
-        background-color: #e94560;
-        padding: 2px 8px;
-        border-radius: 10px;
-        font-size: 0.75rem;
-        min-width: 30px;
-        text-align: center;
-        color: #ffffff;
-    }
-    
-    .leaderboard-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        background-color: #2d3a5a;
-        border-radius: 8px;
-        margin-bottom: 8px;
-    }
-    .rank { font-size: 1.3rem; font-weight: bold; width: 30px; text-align: center; color: #ffffff; }
-    .rank-1 { color: #ffd700; }
-    .rank-2 { color: #c0c0c0; }
-    .rank-3 { color: #cd7f32; }
-    .leader-info { flex: 1; }
-    .leader-name { font-weight: 600; font-size: 0.9rem; color: #ffffff; }
-    .leader-party { font-size: 0.75rem; color: #94a3b8; }
-    .leader-votes { font-size: 1.1rem; font-weight: bold; color: #e94560; }
-    
-    .party-badge {
-        display: inline-block;
-        padding: 2px 6px;
-        border-radius: 8px;
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: #ffffff;
-    }
-    .party-badge.ndp { background-color: #f97316; }
-    .party-badge.conservative { background-color: #3b82f6; }
-    .party-badge.green { background-color: #22c55e; }
-    .party-badge.independent { background-color: #8b5cf6; }
-    .party-badge.onebc { background-color: #ec4899; }
-    
-    .cooldown-notice {
-        text-align: center;
-        padding: 12px;
-        background-color: #4a2a3a;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        display: none;
-        color: #ffffff;
-    }
-    .info-box {
-        background-color: #2a3a5a;
-        border-radius: 8px;
-        padding: 12px;
-        margin-top: 15px;
-        font-size: 0.85rem;
-        line-height: 1.5;
-        color: #94a3b8;
-    }
-    .info-box h4 { margin-bottom: 8px; color: #60a5fa; font-size: 0.9rem; }
-    .total-votes { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
-    .empty-leaderboard { text-align: center; padding: 20px; color: #94a3b8; }
-</style>
-```
-
+        
+        .countdown-section {
+            background-color: #1e2a4a;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .countdown-title { text-align: center; margin-bottom: 20px; color: #e94560; font-size: 1.2rem; }
+        .countdown-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .countdown-item {
+            background-color: #162038;
+            padding: 15px 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 70px;
+        }
+        .countdown-number { font-size: 2rem; font-weight: bold; color: #e94560; }
+        .countdown-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
+        .target-date { text-align: center; margin-top: 15px; color: #94a3b8; font-size: 0.9rem; }
+        
+        .main-content { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        @media (min-width: 900px) {
+            .main-content { grid-template-columns: 1fr 380px; }
+            h1 { font-size: 2.5rem; }
+            .countdown-number { font-size: 3rem; }
+        }
+        
+        .voting-section, .leaderboard-section {
+            background-color: #1e2a4a;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        
+        .party-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .party-tab {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.6;
+        }
+        .party-tab.active { opacity: 1; }
+        .party-tab.ndp { background-color: #f97316; color: white; }
+        .party-tab.conservative { background-color: #3b82f6; color: white; }
+        .party-tab.green { background-color: #22c55e; color: white; }
+        .party-tab.independent { background-color: #8b5cf6; color: white; }
+        .party-tab.onebc { background-color: #ec4899; color: white; }
+        
+        .mla-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            max-height: 450px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .mla-card {
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #2d3a5a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .mla-info { flex: 1; }
+        .mla-name { color: #ffffff; font-weight: 600; font-size: 0.9rem; }
+        .mla-riding { color: #94a3b8; font-size: 0.75rem; }
+        .mla-stats { color: #94a3b8; font-size: 0.75rem; margin-top: 3px; }
+        
+        .vote-buttons { display: flex; gap: 6px; }
+        .vote-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .vote-btn.up { background-color: #22c55e; color: white; }
+        .vote-btn.down { background-color: #ef4444; color: white; }
+        .vote-btn.up:hover:not(:disabled) { background-color: #16a34a; }
+        .vote-btn.down:hover:not(:disabled) { background-color: #dc2626; }
+        
+        .leaderboard-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #2d3a5a;
+            color: #94a3b8;
+        }
+        .toggle-btn.active { background-color: #e94560; color: white; }
+        
+        .min-votes-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #2d3a5a;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .rank { font-size: 1.2rem; font-weight: bold; width: 28px; text-align: center; color: #ffffff; }
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        .leader-info { flex: 1; min-width: 0; }
+        .leader-name { font-weight: 600; font-size: 0.85rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .leader-party { font-size: 0.7rem; color: #94a3b8; }
+        .leader-stats { text-align: right; }
+        .leader-percent { font-size: 1.1rem; font-weight: bold; }
+        .leader-percent.high { color: #22c55e; }
+        .leader-percent.low { color: #ef4444; }
+        .leader-votes { font-size: 0.7rem; color: #94a3b8; }
+        
+        .party-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-right: 4px;
+        }
+        .party-badge.ndp { background-color: #f97316; }
+        .party-badge.conservative { background-color: #3b82f6; }
+        .party-badge.green { background-color: #22c55e; }
+        .party-badge.independent { background-color: #8b5cf6; }
+        .party-badge.onebc { background-color: #ec4899; }
+        
+        .cooldown-notice {
+            text-align: center;
+            padding: 12px;
+            background-color: #4a2a3a;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            color: #ffffff;
+        }
+        .info-box {
+            background-color: #2a3a5a;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #94a3b8;
+        }
+        .info-box h4 { margin-bottom: 8px; color: #60a5fa; font-size: 0.9rem; }
+        .total-votes { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
+        .empty-leaderboard { text-align: center; padding: 20px; color: #94a3b8; }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>BC MLA Recall Countdown</h1>
-            <p class="subtitle">Vote for which MLA you would most like to see recalled</p>
+            <h1>BC MLA Approval Tracker</h1>
+            <p class="subtitle">Rate your MLA - Countdown to when recall petitions can begin</p>
         </header>
-
-```
-    <section class="countdown-section">
-        <h2 class="countdown-title">Time Until Recall Petitions Can Begin</h2>
-        <div class="countdown-grid">
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">0</div>
-                <div class="countdown-label">Days</div>
+        
+        <section class="countdown-section">
+            <h2 class="countdown-title">Time Until Recall Petitions Can Begin</h2>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">0</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">0</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">0</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">0</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
             </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">0</div>
-                <div class="countdown-label">Hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">0</div>
-                <div class="countdown-label">Minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">0</div>
-                <div class="countdown-label">Seconds</div>
-            </div>
-        </div>
-        <p class="target-date">Target Date: <strong>April 20, 2026</strong></p>
-    </section>
-    
-    <div class="main-content">
-        <section class="voting-section">
-            <h2>Vote for MLA to Recall</h2>
-            
-            <div class="cooldown-notice" id="cooldown-notice">
-                Please wait <span id="cooldown-time">60</span>s before voting again
-            </div>
-            
-            <div class="party-tabs" id="party-tabs">
-                <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
-                <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (39)</button>
-                <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
-                <button class="party-tab independent" onclick="showParty('independent')">Independent (3)</button>
-                <button class="party-tab onebc" onclick="showParty('onebc')">OneBC (2)</button>
-            </div>
-            
-            <div class="mla-grid" id="mla-grid"></div>
-            
-            <div class="info-box">
-                <h4>About BC Recall Elections</h4>
-                <p>Under BC Recall and Initiative Act, voters can petition to recall their MLA 18 months after an election. Success requires 40% of registered voters in that riding to sign within 60 days.</p>
-            </div>
+            <p class="target-date">Target Date: <strong>April 20, 2026</strong></p>
         </section>
         
-        <section class="leaderboard-section">
-            <h2>Top 10 to Recall</h2>
-            <div id="leaderboard"><div class="empty-leaderboard">No votes yet</div></div>
-            <div class="total-votes" id="total-votes"></div>
-        </section>
+        <div class="main-content">
+            <section class="voting-section">
+                <h2>Rate Your MLA</h2>
+                
+                <div class="cooldown-notice" id="cooldown-notice">
+                    Please wait <span id="cooldown-time">30</span>s before voting again
+                </div>
+                
+                <div class="party-tabs">
+                    <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
+                    <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (39)</button>
+                    <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
+                    <button class="party-tab independent" onclick="showParty('independent')">Independent (3)</button>
+                    <button class="party-tab onebc" onclick="showParty('onebc')">OneBC (2)</button>
+                </div>
+                
+                <div class="mla-grid" id="mla-grid"></div>
+                
+                <div class="info-box">
+                    <h4>About BC Recall Elections</h4>
+                    <p>Under BC Recall and Initiative Act, voters can petition to recall their MLA 18 months after an election. Success requires 40% of registered voters in that riding to sign within 60 days.</p>
+                </div>
+            </section>
+            
+            <section class="leaderboard-section">
+                <h2>Leaderboard</h2>
+                <div class="leaderboard-toggle">
+                    <button class="toggle-btn active" id="btn-approved" onclick="setLeaderboard('approved')">Most Approved</button>
+                    <button class="toggle-btn" id="btn-disapproved" onclick="setLeaderboard('disapproved')">Least Approved</button>
+                </div>
+                <div class="min-votes-note">Minimum 5 votes to appear</div>
+                <div id="leaderboard"><div class="empty-leaderboard">No votes yet</div></div>
+                <div class="total-votes" id="total-votes"></div>
+            </section>
+        </div>
     </div>
-</div>
-```
-
+    
 <script>
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU2vj_QH2ratoPVeWXVrYbJRfvGpMedh5Xi22rYukItEfQ4/exec';
+var MIN_VOTES = 5;
 
 var MLAs = {
     ndp: [
@@ -334,11 +372,12 @@ var MLAs = {
 };
 
 var currentParty = 'ndp';
+var leaderboardMode = 'approved';
 var votes = {};
 var lastVoteTime = 0;
-var COOLDOWN_MS = 60000;
+var COOLDOWN_MS = 30000;
 
-try { lastVoteTime = parseInt(localStorage.getItem('lastVoteTime')) || 0; } catch(e) {}
+try { lastVoteTime = parseInt(localStorage.getItem('lastVoteTime2')) || 0; } catch(e) {}
 
 function updateCountdown() {
     var target = new Date(2026, 3, 20, 0, 0, 0);
@@ -381,6 +420,26 @@ function showParty(party) {
     renderMLAGrid();
 }
 
+function setLeaderboard(mode) {
+    leaderboardMode = mode;
+    document.getElementById('btn-approved').classList.remove('active');
+    document.getElementById('btn-disapproved').classList.remove('active');
+    if (mode === 'approved') {
+        document.getElementById('btn-approved').classList.add('active');
+    } else {
+        document.getElementById('btn-disapproved').classList.add('active');
+    }
+    renderLeaderboard();
+}
+
+function getVoteData(mla) {
+    var key = mla.name + '|' + mla.riding;
+    var data = votes[key] || {up: 0, down: 0};
+    var total = data.up + data.down;
+    var percent = total > 0 ? Math.round((data.up / total) * 100) : 0;
+    return {up: data.up, down: data.down, total: total, percent: percent};
+}
+
 function renderMLAGrid() {
     var grid = document.getElementById('mla-grid');
     var mlas = MLAs[currentParty];
@@ -389,12 +448,20 @@ function renderMLAGrid() {
     
     for (var i = 0; i < mlas.length; i++) {
         var mla = mlas[i];
-        var key = mla.name + '|' + mla.riding;
-        var voteCount = votes[key] || 0;
-        html += '<button class="mla-btn" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\')">';
-        html += '<span class="name">' + mla.name + '</span>';
-        html += '<span class="votes">' + voteCount + '</span>';
-        html += '</button>';
+        var data = getVoteData(mla);
+        var statsText = data.total > 0 ? data.percent + '% approval (' + data.total + ' votes)' : 'No votes yet';
+        
+        html += '<div class="mla-card">';
+        html += '<div class="mla-info">';
+        html += '<div class="mla-name">' + mla.name + '</div>';
+        html += '<div class="mla-riding">' + mla.riding + '</div>';
+        html += '<div class="mla-stats">' + statsText + '</div>';
+        html += '</div>';
+        html += '<div class="vote-buttons">';
+        html += '<button class="vote-btn up" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'up\')">&#128077;</button>';
+        html += '<button class="vote-btn down" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'down\')">&#128078;</button>';
+        html += '</div>';
+        html += '</div>';
     }
     
     grid.innerHTML = html;
@@ -410,19 +477,23 @@ function renderLeaderboard() {
         var mlas = MLAs[party];
         for (var i = 0; i < mlas.length; i++) {
             var mla = mlas[i];
-            var key = mla.name + '|' + mla.riding;
-            var voteCount = votes[key] || 0;
-            if (voteCount > 0) {
-                allMLAs.push({name: mla.name, riding: mla.riding, party: party, votes: voteCount});
+            var data = getVoteData(mla);
+            if (data.total >= MIN_VOTES) {
+                allMLAs.push({name: mla.name, riding: mla.riding, party: party, up: data.up, down: data.down, total: data.total, percent: data.percent});
             }
         }
     }
     
-    allMLAs.sort(function(a, b) { return b.votes - a.votes; });
+    if (leaderboardMode === 'approved') {
+        allMLAs.sort(function(a, b) { return b.percent - a.percent || b.total - a.total; });
+    } else {
+        allMLAs.sort(function(a, b) { return a.percent - b.percent || b.total - a.total; });
+    }
+    
     var top10 = allMLAs.slice(0, 10);
     
     if (top10.length === 0) {
-        leaderboard.innerHTML = '<div class="empty-leaderboard">No votes yet. Be the first!</div>';
+        leaderboard.innerHTML = '<div class="empty-leaderboard">Need ' + MIN_VOTES + '+ votes to rank</div>';
         document.getElementById('total-votes').innerText = '';
         return;
     }
@@ -430,20 +501,28 @@ function renderLeaderboard() {
     var html = '';
     for (var i = 0; i < top10.length; i++) {
         var mla = top10[i];
+        var colorClass = mla.percent >= 50 ? 'high' : 'low';
+        
         html += '<div class="leaderboard-item">';
         html += '<span class="rank rank-' + (i+1) + '">' + (i+1) + '</span>';
         html += '<div class="leader-info">';
         html += '<div class="leader-name">' + mla.name + '</div>';
-        html += '<div class="leader-party"><span class="party-badge ' + mla.party + '">' + mla.party.toUpperCase() + '</span> ' + mla.riding + '</div>';
+        html += '<div class="leader-party"><span class="party-badge ' + mla.party + '">' + mla.party.toUpperCase() + '</span>' + mla.riding + '</div>';
         html += '</div>';
-        html += '<div class="leader-votes">' + mla.votes + '</div>';
+        html += '<div class="leader-stats">';
+        html += '<div class="leader-percent ' + colorClass + '">' + mla.percent + '%</div>';
+        html += '<div class="leader-votes">' + mla.total + ' votes</div>';
+        html += '</div>';
         html += '</div>';
     }
     leaderboard.innerHTML = html;
     
-    var total = 0;
-    for (var key in votes) { total += votes[key]; }
-    document.getElementById('total-votes').innerText = 'Total votes: ' + total;
+    var totalUp = 0, totalDown = 0;
+    for (var key in votes) {
+        totalUp += votes[key].up || 0;
+        totalDown += votes[key].down || 0;
+    }
+    document.getElementById('total-votes').innerText = 'Total: ' + (totalUp + totalDown) + ' votes (' + totalUp + ' up, ' + totalDown + ' down)';
 }
 
 function updateCooldownNotice() {
@@ -454,26 +533,32 @@ function updateCooldownNotice() {
         span.innerText = getCooldownRemaining();
     } else {
         notice.style.display = 'none';
-        var btns = document.querySelectorAll('.mla-btn');
+        var btns = document.querySelectorAll('.vote-btn');
         for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
     }
 }
 
-function vote(name, riding) {
+function vote(name, riding, voteType) {
     if (!canVote()) { updateCooldownNotice(); return; }
     
     var key = name + '|' + riding;
-    votes[key] = (votes[key] || 0) + 1;
-    lastVoteTime = Date.now();
+    if (!votes[key]) votes[key] = {up: 0, down: 0};
     
-    try { localStorage.setItem('lastVoteTime', lastVoteTime.toString()); } catch(e) {}
+    if (voteType === 'up') {
+        votes[key].up++;
+    } else {
+        votes[key].down++;
+    }
+    
+    lastVoteTime = Date.now();
+    try { localStorage.setItem('lastVoteTime2', lastVoteTime.toString()); } catch(e) {}
     
     renderMLAGrid();
     renderLeaderboard();
     updateCooldownNotice();
     
     var img = new Image();
-    img.src = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&_=' + Date.now();
+    img.src = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
 }
 
 updateCountdown();
@@ -498,6 +583,5 @@ setTimeout(function() {
     xhr.send();
 }, 500);
 </script>
-
 </body>
 </html>
