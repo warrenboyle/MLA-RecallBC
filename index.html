@@ -86,12 +86,16 @@
             align-items: center;
             gap: 10px;
         }
+        .mla-card.voted {
+            background-color: #1e2a3a;
+            border: 1px solid #3d4a6a;
+        }
         .mla-info { flex: 1; }
         .mla-name { color: #ffffff; font-weight: 600; font-size: 0.9rem; }
         .mla-riding { color: #94a3b8; font-size: 0.75rem; }
         .mla-stats { color: #94a3b8; font-size: 0.75rem; margin-top: 3px; }
         
-        .vote-buttons { display: flex; gap: 6px; }
+        .vote-buttons { display: flex; gap: 6px; align-items: center; }
         .vote-btn {
             width: 44px;
             height: 44px;
@@ -103,11 +107,21 @@
             align-items: center;
             justify-content: center;
         }
-        .vote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .vote-btn:disabled { opacity: 0.3; cursor: not-allowed; }
         .vote-btn.up { background-color: #22c55e; color: white; }
         .vote-btn.down { background-color: #ef4444; color: white; }
         .vote-btn.up:hover:not(:disabled) { background-color: #16a34a; }
         .vote-btn.down:hover:not(:disabled) { background-color: #dc2626; }
+        
+        .voted-badge {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            background-color: #1e2a3a;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .voted-badge.up { color: #22c55e; }
+        .voted-badge.down { color: #ef4444; }
         
         .leaderboard-toggle {
             display: flex;
@@ -171,15 +185,6 @@
         .party-badge.independent { background-color: #8b5cf6; }
         .party-badge.onebc { background-color: #ec4899; }
         
-        .cooldown-notice {
-            text-align: center;
-            padding: 12px;
-            background-color: #4a2a3a;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: none;
-            color: #ffffff;
-        }
         .info-box {
             background-color: #2a3a5a;
             border-radius: 8px;
@@ -192,13 +197,23 @@
         .info-box h4 { margin-bottom: 8px; color: #60a5fa; font-size: 0.9rem; }
         .total-votes { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
         .empty-leaderboard { text-align: center; padding: 20px; color: #94a3b8; }
+        
+        .your-votes-count {
+            text-align: center;
+            padding: 10px;
+            background-color: #2a3a5a;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>BC MLA Approval Tracker</h1>
-            <p class="subtitle">Rate your MLA - Countdown to when recall petitions can begin</p>
+            <p class="subtitle">Rate your MLAs - Countdown to when recall petitions can begin</p>
         </header>
         
         <section class="countdown-section">
@@ -226,18 +241,17 @@
         
         <div class="main-content">
             <section class="voting-section">
-                <h2>Rate Your MLA</h2>
+                <h2>Rate Your MLAs</h2>
                 
-                <div class="cooldown-notice" id="cooldown-notice">
-                    Please wait <span id="cooldown-time">30</span>s before voting again
+                <div class="your-votes-count" id="your-votes-count">
+                    You have rated <strong>0</strong> of 93 MLAs
                 </div>
                 
                 <div class="party-tabs">
                     <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
                     <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (39)</button>
                     <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
-                    <button class="party-tab independent" onclick="showParty('independent')">Independent (3)</button>
-                    <button class="party-tab onebc" onclick="showParty('onebc')">OneBC (2)</button>
+                    <button class="party-tab independent" onclick="showParty('independent')">Independent (5)</button>
                 </div>
                 
                 <div class="mla-grid" id="mla-grid"></div>
@@ -268,116 +282,121 @@ var MIN_VOTES = 5;
 var MLAs = {
     ndp: [
         {name: "David Eby", riding: "Vancouver-Point Grey"},
-        {name: "Adrian Dix", riding: "Vancouver-Renfrew"},
+        {name: "Niki Sharma", riding: "Vancouver-Hastings"},
         {name: "Mike Farnworth", riding: "Port Coquitlam"},
-        {name: "Brenda Bailey", riding: "Vancouver-South Granville"},
-        {name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows"},
-        {name: "Garry Begg", riding: "Surrey-Guildford"},
         {name: "Raj Chouhan", riding: "Burnaby-New Westminster"},
+        {name: "Adrian Dix", riding: "Vancouver-Renfrew"},
         {name: "Ravi Kahlon", riding: "Delta North"},
-        {name: "Lana Popham", riding: "Saanich South"},
-        {name: "Anne Kang", riding: "Burnaby-Deer Lake"},
+        {name: "Bowinn Ma", riding: "North Vancouver-Lonsdale"},
+        {name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows"},
+        {name: "Josie Osborne", riding: "Mid Island-Pacific Rim"},
         {name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island"},
+        {name: "George Anderson", riding: "Nanaimo-Lantzville"},
+        {name: "Brittny Anderson", riding: "Kootenay Central"},
         {name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam"},
         {name: "Grace Lore", riding: "Victoria-Beacon Hill"},
-        {name: "Bowinn Ma", riding: "North Vancouver-Lonsdale"},
-        {name: "Brittny Anderson", riding: "Kootenay Central"},
-        {name: "Rick Glumac", riding: "Port Moody-Burquitlam"},
-        {name: "Kelly Greene", riding: "Richmond-Steveston"},
-        {name: "Spencer Chandra Herbert", riding: "Vancouver-West End"},
-        {name: "Ravi Parmar", riding: "Langford-Highlands"},
-        {name: "Mable Elmore", riding: "Vancouver-Kensington"},
+        {name: "Lana Popham", riding: "Saanich South"},
+        {name: "Anne Kang", riding: "Burnaby Centre"},
         {name: "Janet Routledge", riding: "Burnaby North"},
-        {name: "Josie Osborne", riding: "Mid Island-Pacific Rim"},
-        {name: "Niki Sharma", riding: "Vancouver-Hastings"},
-        {name: "Jagrup Brar", riding: "Surrey-Fleetwood"},
-        {name: "Bob DEith", riding: "Maple Ridge-Mission"},
-        {name: "Fin Donnelly", riding: "Coquitlam-Burke Mountain"},
-        {name: "Jodie Wickens", riding: "Coquitlam-Maillardville"},
+        {name: "Paul Choi", riding: "Burnaby South-Metrotown"},
+        {name: "Rohini Arora", riding: "Burnaby East"},
+        {name: "Jennifer Blatherwick", riding: "Coquitlam-Maillardville"},
+        {name: "Jodie Wickens", riding: "Coquitlam-Burke Mountain"},
         {name: "Susie Chant", riding: "North Vancouver-Seymour"},
-        {name: "George Anderson", riding: "Victoria-Swan Lake"},
-        {name: "Jessie Sunner", riding: "Surrey-Serpentine River"},
-        {name: "Jennifer Blatherwick", riding: "North Coast-Haida Gwaii"},
-        {name: "Amna Shah", riding: "Surrey-City Centre"},
-        {name: "Paul Choi", riding: "Burnaby East"},
-        {name: "Sunita Dhir", riding: "Surrey-Newton"},
-        {name: "Nina Krieger", riding: "Vancouver-Fraserview"},
-        {name: "Stephanie Higginson", riding: "Ladysmith-Oceanside"},
-        {name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat"},
         {name: "Diana Gibson", riding: "Oak Bay-Gordon Head"},
-        {name: "Joan Phillip", riding: "Vancouver-Mount Pleasant"},
-        {name: "Darlene Rotchford", riding: "Esquimalt-Colwood"},
-        {name: "Christine Boyle", riding: "Vancouver-Little Mountain"},
-        {name: "George Heyman", riding: "Vancouver-Fairview"},
-        {name: "Henry Yao", riding: "Richmond-Queensborough"},
         {name: "Randene Neill", riding: "Powell River-Sunshine Coast"},
-        {name: "Jessie Dhaliwal", riding: "Surrey-Panorama"},
-        {name: "Jenn Kramer", riding: "North Island"},
-        {name: "Donegal Wilson", riding: "Boundary-Similkameen"}
+        {name: "Tamara Davidson", riding: "North Coast-Haida Gwaii"},
+        {name: "Christine Boyle", riding: "Vancouver-Little Mountain"},
+        {name: "Joan Phillip", riding: "Vancouver-Strathcona"},
+        {name: "Terry Yung", riding: "Vancouver-Yaletown"},
+        {name: "Garry Begg", riding: "Surrey-Guildford"},
+        {name: "Amna Shah", riding: "Surrey City Centre"},
+        {name: "Jessie Sunner", riding: "Surrey-Newton"},
+        {name: "Darlene Rotchford", riding: "Esquimalt-Colwood"},
+        {name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat"},
+        {name: "Debra Toporowski", riding: "Cowichan Valley"},
+        {name: "Stephanie Higginson", riding: "Ladysmith-Oceanside"},
+        {name: "Steve Morissette", riding: "Kootenay-Monashee"},
+        {name: "Harwinder Sandhu", riding: "Vernon-Lumby"},
+        {name: "Ravi Parmar", riding: "Langford-Highlands"},
+        {name: "Kelly Greene", riding: "Richmond-Steveston"},
+        {name: "Rick Glumac", riding: "Port Moody-Burquitlam"},
+        {name: "Spencer Chandra Herbert", riding: "Vancouver-West End"},
+        {name: "Mable Elmore", riding: "Vancouver-Kensington"},
+        {name: "George Chow", riding: "Vancouver-Fraserview"},
+        {name: "Nina Krieger", riding: "Victoria-Swan Lake"},
+        {name: "Brenda Bailey", riding: "Vancouver-South Granville"},
+        {name: "Jagrup Brar", riding: "Surrey-Fleetwood"},
+        {name: "Sunita Dhir", riding: "Vancouver-Langara"}
     ],
     conservative: [
-        {name: "John Rustad", riding: "Nechako Lakes"},
         {name: "Trevor Halford", riding: "Surrey-White Rock"},
-        {name: "Peter Milobar", riding: "Kamloops-Centre"},
+        {name: "John Rustad", riding: "Nechako Lakes"},
+        {name: "Aaliyah Warbus", riding: "Chilliwack-Cultus Lake"},
         {name: "Bruce Banman", riding: "Abbotsford South"},
-        {name: "Elenore Sturko", riding: "Surrey-Cloverdale"},
+        {name: "Sheldon Clare", riding: "Prince George-North Cariboo"},
+        {name: "Peter Milobar", riding: "Kamloops Centre"},
         {name: "Teresa Wat", riding: "Richmond-Bridgeport"},
         {name: "Lorne Doerkson", riding: "Cariboo-Chilcotin"},
-        {name: "Aaliya Warbus", riding: "Chilliwack-Cultus Lake"},
-        {name: "Kiel Giddens", riding: "Prince George-Mackenzie"},
-        {name: "Sheldon Clare", riding: "Prince George-North Cariboo"},
-        {name: "Rosalyn Bird", riding: "Prince George-Valemount"},
-        {name: "Macklin McCall", riding: "West Kelowna-Peachland"},
-        {name: "Gavin Dew", riding: "Kelowna-Mission"},
-        {name: "Kristina Loewen", riding: "Kelowna Centre"},
-        {name: "Harman Bhangu", riding: "Langley-Walnut Grove"},
-        {name: "Misty Van Popta", riding: "Langley-Willowbrook"},
-        {name: "Brent Chapman", riding: "Surrey-South"},
+        {name: "Reann Gasper", riding: "Abbotsford-Mission"},
+        {name: "Korky Neufeld", riding: "Abbotsford West"},
+        {name: "Donegal Wilson", riding: "Boundary-Similkameen"},
+        {name: "Sharon Hartwell", riding: "Bulkley Valley-Stikine"},
         {name: "Heather Maahs", riding: "Chilliwack North"},
-        {name: "Chuck Chicken", riding: "Fraser-Nicola"},
+        {name: "Scott McInnis", riding: "Columbia River-Revelstoke"},
+        {name: "Brennan Day", riding: "Courtenay-Comox"},
         {name: "Ian Paton", riding: "Delta South"},
-        {name: "Mike de Jong", riding: "Abbotsford-Mission"},
-        {name: "Lawrence Mok", riding: "Richmond Centre"},
-        {name: "Korky Feeney", riding: "Kamloops-North Thompson"},
-        {name: "Amelia Boultbee", riding: "Salmon Arm-Shuswap"},
-        {name: "Tom Shypitka", riding: "Kootenay-Rockies"},
-        {name: "Claire Rathbone", riding: "Penticton-Summerland"},
-        {name: "Anna Kindy", riding: "Vernon-Lumby"},
-        {name: "Bryan Tepper", riding: "Courtenay-Comox"},
-        {name: "Stephen Fowler", riding: "Kelowna-Lake Country-Coldstream"},
-        {name: "Mike Bandstra", riding: "Abbotsford West"},
-        {name: "Dennis Giesbrecht", riding: "Mission-Agassiz"},
-        {name: "Larry Neufeld", riding: "Peace River North"},
-        {name: "Dan Baird", riding: "Columbia River-Trail"},
-        {name: "Conn Doheny", riding: "Parksville-Qualicum"},
-        {name: "Donnie Rosa", riding: "Skeena"},
-        {name: "Rohit Sandhu", riding: "Surrey-Green Timbers"},
-        {name: "Tony Luck", riding: "Vancouver-Langara"},
-        {name: "Tim Thielmann", riding: "Vernon-Monashee"},
-        {name: "John Wilson", riding: "Stikine-Terrace"}
+        {name: "Tony Luck", riding: "Fraser-Nicola"},
+        {name: "Ward Stamer", riding: "Kamloops-North Thompson"},
+        {name: "Kristina Loewen", riding: "Kelowna Centre"},
+        {name: "Gavin Dew", riding: "Kelowna-Mission"},
+        {name: "Pete Davis", riding: "Kootenay-Rockies"},
+        {name: "Harman Bhangu", riding: "Langley-Abbotsford"},
+        {name: "Misty Van Popta", riding: "Langley-Walnut Grove"},
+        {name: "Jody Toor", riding: "Langley-Willowbrook"},
+        {name: "Lawrence Mok", riding: "Maple Ridge East"},
+        {name: "Anna Kindy", riding: "North Island"},
+        {name: "Larry Neufeld", riding: "Peace River South"},
+        {name: "Kiel Giddens", riding: "Prince George-Mackenzie"},
+        {name: "Rosalyn Bird", riding: "Prince George-Valemount"},
+        {name: "Hon Chan", riding: "Richmond Centre"},
+        {name: "Steve Kooner", riding: "Richmond-Queensborough"},
+        {name: "David Williams", riding: "Salmon Arm-Shuswap"},
+        {name: "Claire Rattee", riding: "Skeena"},
+        {name: "Mandeep Dhaliwal", riding: "Surrey North"},
+        {name: "Linda Hepner", riding: "Surrey-Serpentine River"},
+        {name: "Brent Chapman", riding: "Surrey South"},
+        {name: "Bryan Tepper", riding: "Surrey-Panorama"},
+        {name: "Macklin McCall", riding: "West Kelowna-Peachland"}  
+        
     ],
     green: [
         {name: "Jeremy Valeriote", riding: "West Vancouver-Sea to Sky"},
         {name: "Rob Botterell", riding: "Saanich North and the Islands"}
     ],
     independent: [
-        {name: "John Koury", riding: "Peace River South"},
-        {name: "Karin Kirkpatrick", riding: "West Vancouver-Capilano"},
-        {name: "Kevin Falcon", riding: "Vancouver-Quilchena"}
-    ],
-    onebc: [
-        {name: "Dallas Brodie", riding: "Surrey East"},
-        {name: "Tara Armstrong", riding: "Kelowna-Centre"}
+        {name: "Tara Armstrong", riding: "Kelowna-Lake Country-Coldstream"},
+        {name: "Amelia Boultbee", riding: "Penticton-Summerland"},
+        {name: "Dallas Brodie", riding: "Vancouver-Quilchena"},
+        {name: "Elenore Sturko", riding: "Surrey-Cloverdale"},
+        {name: "Jordan Kealy", riding: "Peace River North"},
     ]
 };
 
 var currentParty = 'ndp';
 var leaderboardMode = 'approved';
 var votes = {};
-var lastVoteTime = 0;
-var COOLDOWN_MS = 30000;
+var myVotes = {};
 
-try { lastVoteTime = parseInt(localStorage.getItem('lastVoteTime2')) || 0; } catch(e) {}
+// Load user's previous votes from localStorage
+try { 
+    var saved = localStorage.getItem('myMLAVotes');
+    if (saved) myVotes = JSON.parse(saved);
+} catch(e) {}
+
+function saveMyVotes() {
+    try { localStorage.setItem('myMLAVotes', JSON.stringify(myVotes)); } catch(e) {}
+}
 
 function updateCountdown() {
     var target = new Date(2026, 3, 20, 0, 0, 0);
@@ -403,11 +422,18 @@ function updateCountdown() {
     document.getElementById('seconds').innerText = seconds;
 }
 
-function canVote() { return (Date.now() - lastVoteTime) >= COOLDOWN_MS; }
+function hasVoted(key) {
+    return myVotes[key] !== undefined;
+}
 
-function getCooldownRemaining() {
-    var r = Math.ceil((COOLDOWN_MS - (Date.now() - lastVoteTime)) / 1000);
-    return r > 0 ? r : 0;
+function getMyVote(key) {
+    return myVotes[key];
+}
+
+function countMyVotes() {
+    var count = 0;
+    for (var key in myVotes) count++;
+    return count;
 }
 
 function showParty(party) {
@@ -440,31 +466,49 @@ function getVoteData(mla) {
     return {up: data.up, down: data.down, total: total, percent: percent};
 }
 
+function updateYourVotesCount() {
+    var count = countMyVotes();
+    document.getElementById('your-votes-count').innerHTML = 'You have rated <strong>' + count + '</strong> of 93 MLAs';
+}
+
 function renderMLAGrid() {
     var grid = document.getElementById('mla-grid');
     var mlas = MLAs[currentParty];
     var html = '';
-    var disabled = !canVote() ? 'disabled' : '';
     
     for (var i = 0; i < mlas.length; i++) {
         var mla = mlas[i];
+        var key = mla.name + '|' + mla.riding;
         var data = getVoteData(mla);
+        var voted = hasVoted(key);
+        var myVote = getMyVote(key);
         var statsText = data.total > 0 ? data.percent + '% approval (' + data.total + ' votes)' : 'No votes yet';
         
-        html += '<div class="mla-card">';
+        html += '<div class="mla-card' + (voted ? ' voted' : '') + '">';
         html += '<div class="mla-info">';
         html += '<div class="mla-name">' + mla.name + '</div>';
         html += '<div class="mla-riding">' + mla.riding + '</div>';
         html += '<div class="mla-stats">' + statsText + '</div>';
         html += '</div>';
         html += '<div class="vote-buttons">';
-        html += '<button class="vote-btn up" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'up\')">&#128077;</button>';
-        html += '<button class="vote-btn down" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'down\')">&#128078;</button>';
+        
+        if (voted) {
+            if (myVote === 'up') {
+                html += '<span class="voted-badge up">&#128077; Voted</span>';
+            } else {
+                html += '<span class="voted-badge down">&#128078; Voted</span>';
+            }
+        } else {
+            html += '<button class="vote-btn up" onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'up\')">&#128077;</button>';
+            html += '<button class="vote-btn down" onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\', \'down\')">&#128078;</button>';
+        }
+        
         html += '</div>';
         html += '</div>';
     }
     
     grid.innerHTML = html;
+    updateYourVotesCount();
 }
 
 function renderLeaderboard() {
@@ -525,45 +569,36 @@ function renderLeaderboard() {
     document.getElementById('total-votes').innerText = 'Total: ' + (totalUp + totalDown) + ' votes (' + totalUp + ' up, ' + totalDown + ' down)';
 }
 
-function updateCooldownNotice() {
-    var notice = document.getElementById('cooldown-notice');
-    var span = document.getElementById('cooldown-time');
-    if (!canVote()) {
-        notice.style.display = 'block';
-        span.innerText = getCooldownRemaining();
-    } else {
-        notice.style.display = 'none';
-        var btns = document.querySelectorAll('.vote-btn');
-        for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
-    }
-}
-
 function vote(name, riding, voteType) {
-    if (!canVote()) { updateCooldownNotice(); return; }
-    
     var key = name + '|' + riding;
-    if (!votes[key]) votes[key] = {up: 0, down: 0};
     
+    // Check if already voted
+    if (hasVoted(key)) {
+        return;
+    }
+    
+    // Record user's vote locally
+    myVotes[key] = voteType;
+    saveMyVotes();
+    
+    // Update global votes
+    if (!votes[key]) votes[key] = {up: 0, down: 0};
     if (voteType === 'up') {
         votes[key].up++;
     } else {
         votes[key].down++;
     }
     
-    lastVoteTime = Date.now();
-    try { localStorage.setItem('lastVoteTime2', lastVoteTime.toString()); } catch(e) {}
-    
     renderMLAGrid();
     renderLeaderboard();
-    updateCooldownNotice();
     
+    // Send to Google Sheets
     var img = new Image();
     img.src = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
 }
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
-setInterval(updateCooldownNotice, 1000);
 renderMLAGrid();
 renderLeaderboard();
 
