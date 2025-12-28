@@ -589,11 +589,9 @@ function vote(name, riding, voteType) {
     renderMLAGrid();
     renderLeaderboard();
     
-    // Send to Google Sheets using XMLHttpRequest
-    var xhr = new XMLHttpRequest();
+    // Send to Google Sheets using fetch with no-cors
     var url = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
-    xhr.open('GET', url, true);
-    xhr.send();
+    fetch(url, { mode: 'no-cors' });
 }
 
 updateCountdown();
