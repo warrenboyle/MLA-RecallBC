@@ -7,83 +7,41 @@
     <title>BC Recall Countdown</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { background-color: #1a1a2e; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: #1a1a2e;
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 15px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; margin-bottom: 10px; color: #e94560; }
+        h2 { color: #ffffff; font-size: 1.3rem; margin-bottom: 15px; }
+        .subtitle { color: #94a3b8; font-size: 1rem; }
 
 ```
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        min-height: 100vh;
-        color: #fff;
-        padding: 15px;
-    }
-    
-    .container { max-width: 1200px; margin: 0 auto; }
-    
-    header { text-align: center; margin-bottom: 30px; }
-    
-    h1 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        color: #e94560;
-    }
-    
-    .subtitle { color: #94a3b8; font-size: 1rem; }
-    
     .countdown-section {
-        background: rgba(255, 255, 255, 0.05);
+        background-color: #1e2a4a;
         border-radius: 20px;
         padding: 25px;
         margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
-    .countdown-title {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #e94560;
-        font-size: 1.2rem;
-    }
-    
-    .countdown-grid {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-    
+    .countdown-title { text-align: center; margin-bottom: 20px; color: #e94560; font-size: 1.2rem; }
+    .countdown-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .countdown-item {
-        background: linear-gradient(145deg, #1e2a4a, #162038);
+        background-color: #162038;
         padding: 15px 20px;
         border-radius: 15px;
         text-align: center;
         min-width: 70px;
     }
+    .countdown-number { font-size: 2rem; font-weight: bold; color: #e94560; }
+    .countdown-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
+    .target-date { text-align: center; margin-top: 15px; color: #94a3b8; font-size: 0.9rem; }
     
-    .countdown-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #e94560;
-    }
-    
-    .countdown-label {
-        color: #94a3b8;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-    
-    .target-date {
-        text-align: center;
-        margin-top: 15px;
-        color: #94a3b8;
-        font-size: 0.9rem;
-    }
-    
-    .main-content {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-    
+    .main-content { display: grid; grid-template-columns: 1fr; gap: 25px; }
     @media (min-width: 900px) {
         .main-content { grid-template-columns: 1fr 350px; }
         h1 { font-size: 2.5rem; }
@@ -91,24 +49,12 @@
     }
     
     .voting-section, .leaderboard-section {
-        background: rgba(255, 255, 255, 0.05);
+        background-color: #1e2a4a;
         border-radius: 20px;
         padding: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .section-title {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-    
-    .party-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-    
+    .party-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
     .party-tab {
         padding: 8px 16px;
         border: none;
@@ -117,17 +63,16 @@
         font-weight: 600;
         opacity: 0.6;
     }
-    
     .party-tab.active { opacity: 1; }
-    .party-tab.ndp { background: #f97316; color: white; }
-    .party-tab.conservative { background: #3b82f6; color: white; }
-    .party-tab.green { background: #22c55e; color: white; }
-    .party-tab.independent { background: #8b5cf6; color: white; }
-    .party-tab.onebc { background: #ec4899; color: white; }
+    .party-tab.ndp { background-color: #f97316; color: white; }
+    .party-tab.conservative { background-color: #3b82f6; color: white; }
+    .party-tab.green { background-color: #22c55e; color: white; }
+    .party-tab.independent { background-color: #8b5cf6; color: white; }
+    .party-tab.onebc { background-color: #ec4899; color: white; }
     
     .mla-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 8px;
         max-height: 400px;
         overflow-y: auto;
@@ -143,19 +88,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(255, 255, 255, 0.08);
-        color: white;
+        background-color: #2d3a5a;
+        color: #ffffff;
     }
-    
     .mla-btn:disabled { opacity: 0.5; }
-    
+    .mla-btn .name { flex: 1; color: #ffffff; }
     .mla-btn .votes {
-        background: rgba(233, 69, 96, 0.3);
-        padding: 2px 6px;
+        background-color: #e94560;
+        padding: 2px 8px;
         border-radius: 10px;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         min-width: 30px;
         text-align: center;
+        color: #ffffff;
     }
     
     .leaderboard-item {
@@ -163,18 +108,16 @@
         align-items: center;
         gap: 10px;
         padding: 10px;
-        background: rgba(255, 255, 255, 0.05);
+        background-color: #2d3a5a;
         border-radius: 8px;
         margin-bottom: 8px;
     }
-    
-    .rank { font-size: 1.3rem; font-weight: bold; width: 30px; text-align: center; }
+    .rank { font-size: 1.3rem; font-weight: bold; width: 30px; text-align: center; color: #ffffff; }
     .rank-1 { color: #ffd700; }
     .rank-2 { color: #c0c0c0; }
     .rank-3 { color: #cd7f32; }
-    
     .leader-info { flex: 1; }
-    .leader-name { font-weight: 600; font-size: 0.9rem; }
+    .leader-name { font-weight: 600; font-size: 0.9rem; color: #ffffff; }
     .leader-party { font-size: 0.75rem; color: #94a3b8; }
     .leader-votes { font-size: 1.1rem; font-weight: bold; color: #e94560; }
     
@@ -184,46 +127,35 @@
         border-radius: 8px;
         font-size: 0.65rem;
         font-weight: 600;
+        color: #ffffff;
     }
-    
-    .party-badge.ndp { background: #f97316; }
-    .party-badge.conservative { background: #3b82f6; }
-    .party-badge.green { background: #22c55e; }
-    .party-badge.independent { background: #8b5cf6; }
-    .party-badge.onebc { background: #ec4899; }
+    .party-badge.ndp { background-color: #f97316; }
+    .party-badge.conservative { background-color: #3b82f6; }
+    .party-badge.green { background-color: #22c55e; }
+    .party-badge.independent { background-color: #8b5cf6; }
+    .party-badge.onebc { background-color: #ec4899; }
     
     .cooldown-notice {
         text-align: center;
         padding: 12px;
-        background: rgba(233, 69, 96, 0.2);
+        background-color: #4a2a3a;
         border-radius: 8px;
         margin-bottom: 15px;
         display: none;
+        color: #ffffff;
     }
-    
     .info-box {
-        background: rgba(59, 130, 246, 0.2);
+        background-color: #2a3a5a;
         border-radius: 8px;
         padding: 12px;
         margin-top: 15px;
         font-size: 0.85rem;
         line-height: 1.5;
+        color: #94a3b8;
     }
-    
     .info-box h4 { margin-bottom: 8px; color: #60a5fa; font-size: 0.9rem; }
-    
-    .total-votes {
-        text-align: center;
-        margin-top: 15px;
-        font-size: 0.85rem;
-        color: #94a3b8;
-    }
-    
-    .empty-leaderboard {
-        text-align: center;
-        padding: 20px;
-        color: #94a3b8;
-    }
+    .total-votes { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
+    .empty-leaderboard { text-align: center; padding: 20px; color: #94a3b8; }
 </style>
 ```
 
@@ -232,7 +164,7 @@
     <div class="container">
         <header>
             <h1>BC MLA Recall Countdown</h1>
-            <p class="subtitle">Vote for which MLA you'd most like to see recalled</p>
+            <p class="subtitle">Vote for which MLA you would most like to see recalled</p>
         </header>
 
 ```
@@ -261,7 +193,7 @@
     
     <div class="main-content">
         <section class="voting-section">
-            <h2 class="section-title">Vote for MLA to Recall</h2>
+            <h2>Vote for MLA to Recall</h2>
             
             <div class="cooldown-notice" id="cooldown-notice">
                 Please wait <span id="cooldown-time">60</span>s before voting again
@@ -279,12 +211,12 @@
             
             <div class="info-box">
                 <h4>About BC Recall Elections</h4>
-                <p>Under BC's Recall and Initiative Act, voters can petition to recall their MLA 18 months after an election. Success requires 40% of registered voters in that riding to sign within 60 days.</p>
+                <p>Under BC Recall and Initiative Act, voters can petition to recall their MLA 18 months after an election. Success requires 40% of registered voters in that riding to sign within 60 days.</p>
             </div>
         </section>
         
         <section class="leaderboard-section">
-            <h2 class="section-title">Top 10 to Recall</h2>
+            <h2>Top 10 to Recall</h2>
             <div id="leaderboard"><div class="empty-leaderboard">No votes yet</div></div>
             <div class="total-votes" id="total-votes"></div>
         </section>
@@ -293,10 +225,8 @@
 ```
 
 <script>
-// Configuration
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU2vj_QH2ratoPVeWXVrYbJRfvGpMedh5Xi22rYukItEfQ4/exec';
 
-// MLA Data
 var MLAs = {
     ndp: [
         {name: "David Eby", riding: "Vancouver-Point Grey"},
@@ -403,28 +333,23 @@ var MLAs = {
     ]
 };
 
-// State
 var currentParty = 'ndp';
 var votes = {};
 var lastVoteTime = 0;
 var COOLDOWN_MS = 60000;
 
-// Load last vote time from localStorage
-try {
-    lastVoteTime = parseInt(localStorage.getItem('lastVoteTime')) || 0;
-} catch(e) {}
+try { lastVoteTime = parseInt(localStorage.getItem('lastVoteTime')) || 0; } catch(e) {}
 
-// Countdown
 function updateCountdown() {
-    var target = new Date(2026, 3, 20, 0, 0, 0); // April 20, 2026
+    var target = new Date(2026, 3, 20, 0, 0, 0);
     var now = new Date();
     var diff = target - now;
     
     if (diff <= 0) {
-        document.getElementById('days').textContent = '0';
-        document.getElementById('hours').textContent = '0';
-        document.getElementById('minutes').textContent = '0';
-        document.getElementById('seconds').textContent = '0';
+        document.getElementById('days').innerText = '0';
+        document.getElementById('hours').innerText = '0';
+        document.getElementById('minutes').innerText = '0';
+        document.getElementById('seconds').innerText = '0';
         return;
     }
     
@@ -433,19 +358,17 @@ function updateCountdown() {
     var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((diff % (1000 * 60)) / 1000);
     
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+    document.getElementById('days').innerText = days;
+    document.getElementById('hours').innerText = hours;
+    document.getElementById('minutes').innerText = minutes;
+    document.getElementById('seconds').innerText = seconds;
 }
 
-function canVote() {
-    return (Date.now() - lastVoteTime) >= COOLDOWN_MS;
-}
+function canVote() { return (Date.now() - lastVoteTime) >= COOLDOWN_MS; }
 
 function getCooldownRemaining() {
-    var remaining = Math.ceil((COOLDOWN_MS - (Date.now() - lastVoteTime)) / 1000);
-    return remaining > 0 ? remaining : 0;
+    var r = Math.ceil((COOLDOWN_MS - (Date.now() - lastVoteTime)) / 1000);
+    return r > 0 ? r : 0;
 }
 
 function showParty(party) {
@@ -453,9 +376,7 @@ function showParty(party) {
     var tabs = document.querySelectorAll('.party-tab');
     for (var i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove('active');
-        if (tabs[i].className.indexOf(party) > -1) {
-            tabs[i].classList.add('active');
-        }
+        if (tabs[i].className.indexOf(party) > -1) tabs[i].classList.add('active');
     }
     renderMLAGrid();
 }
@@ -471,7 +392,7 @@ function renderMLAGrid() {
         var key = mla.name + '|' + mla.riding;
         var voteCount = votes[key] || 0;
         html += '<button class="mla-btn" ' + disabled + ' onclick="vote(\'' + mla.name.replace(/'/g, '') + '\', \'' + mla.riding.replace(/'/g, '') + '\')">';
-        html += '<span>' + mla.name + '</span>';
+        html += '<span class="name">' + mla.name + '</span>';
         html += '<span class="votes">' + voteCount + '</span>';
         html += '</button>';
     }
@@ -502,7 +423,7 @@ function renderLeaderboard() {
     
     if (top10.length === 0) {
         leaderboard.innerHTML = '<div class="empty-leaderboard">No votes yet. Be the first!</div>';
-        document.getElementById('total-votes').textContent = '';
+        document.getElementById('total-votes').innerText = '';
         return;
     }
     
@@ -521,77 +442,46 @@ function renderLeaderboard() {
     leaderboard.innerHTML = html;
     
     var total = 0;
-    for (var key in votes) {
-        total += votes[key];
-    }
-    document.getElementById('total-votes').textContent = 'Total votes: ' + total;
+    for (var key in votes) { total += votes[key]; }
+    document.getElementById('total-votes').innerText = 'Total votes: ' + total;
 }
 
 function updateCooldownNotice() {
     var notice = document.getElementById('cooldown-notice');
     var span = document.getElementById('cooldown-time');
-    
     if (!canVote()) {
         notice.style.display = 'block';
-        span.textContent = getCooldownRemaining();
+        span.innerText = getCooldownRemaining();
     } else {
         notice.style.display = 'none';
-        // Re-enable buttons
         var btns = document.querySelectorAll('.mla-btn');
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].disabled = false;
-        }
+        for (var i = 0; i < btns.length; i++) btns[i].disabled = false;
     }
 }
 
 function vote(name, riding) {
-    if (!canVote()) {
-        updateCooldownNotice();
-        return;
-    }
+    if (!canVote()) { updateCooldownNotice(); return; }
     
     var key = name + '|' + riding;
     votes[key] = (votes[key] || 0) + 1;
     lastVoteTime = Date.now();
     
-    try {
-        localStorage.setItem('lastVoteTime', lastVoteTime.toString());
-    } catch(e) {}
+    try { localStorage.setItem('lastVoteTime', lastVoteTime.toString()); } catch(e) {}
     
     renderMLAGrid();
     renderLeaderboard();
     updateCooldownNotice();
     
-    // Send to Google Sheets
     var img = new Image();
     img.src = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&_=' + Date.now();
 }
 
-function loadVotes() {
-    var script = document.createElement('script');
-    script.src = SCRIPT_URL + '?action=getVotes&callback=handleVotes&_=' + Date.now();
-    script.onerror = function() {
-        console.log('Could not load votes from server');
-    };
-    document.body.appendChild(script);
-}
-
-function handleVotes(data) {
-    if (data && data.success && data.votes) {
-        votes = data.votes;
-        renderMLAGrid();
-        renderLeaderboard();
-    }
-}
-
-// Start everything
 updateCountdown();
 setInterval(updateCountdown, 1000);
 setInterval(updateCooldownNotice, 1000);
 renderMLAGrid();
 renderLeaderboard();
 
-// Try to load votes (won't work without JSONP but that's ok)
 setTimeout(function() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', SCRIPT_URL + '?action=getVotes', true);
