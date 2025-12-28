@@ -66,7 +66,7 @@
         .party-tab.conservative { background-color: #3b82f6; color: white; }
         .party-tab.green { background-color: #22c55e; color: white; }
         .party-tab.independent { background-color: #8b5cf6; color: white; }
-        .party-tab.onebc { background-color: #ec4899; color: white; }
+
         
         .mla-grid {
             display: grid;
@@ -183,7 +183,7 @@
         .party-badge.conservative { background-color: #3b82f6; }
         .party-badge.green { background-color: #22c55e; }
         .party-badge.independent { background-color: #8b5cf6; }
-        .party-badge.onebc { background-color: #ec4899; }
+
         
         .info-box {
             background-color: #2a3a5a;
@@ -249,10 +249,9 @@
                 
                 <div class="party-tabs">
                     <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
-                    <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (39)</button>
+                    <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (38)</button>
                     <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
                     <button class="party-tab independent" onclick="showParty('independent')">Independent (5)</button>
-            
                 </div>
                 
                 <div class="mla-grid" id="mla-grid"></div>
@@ -281,107 +280,106 @@ var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU
 var MIN_VOTES = 5;
 
 var MLAs = {
-ndp: [
-{name: "David Eby", riding: "Vancouver-Point Grey"},
-{name: "Niki Sharma", riding: "Vancouver-Hastings"},
-{name: "Mike Farnworth", riding: "Port Coquitlam"},
-{name: "Raj Chouhan", riding: "Burnaby-New Westminster"},
-{name: "Adrian Dix", riding: "Vancouver-Renfrew"},
-{name: "Ravi Kahlon", riding: "Delta North"},
-{name: "Bowinn Ma", riding: "North Vancouver-Lonsdale"},
-{name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows"},
-{name: "Josie Osborne", riding: "Mid Island-Pacific Rim"},
-{name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island"},
-{name: "George Anderson", riding: "Nanaimo-Lantzville"},
-{name: "Brittny Anderson", riding: "Kootenay Central"},
-{name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam"},
-{name: "Grace Lore", riding: "Victoria-Beacon Hill"},
-{name: "Lana Popham", riding: "Saanich South"},
-{name: "Anne Kang", riding: "Burnaby Centre"},
-{name: "Janet Routledge", riding: "Burnaby North"},
-{name: "Paul Choi", riding: "Burnaby South-Metrotown"},
-{name: "Rohini Arora", riding: "Burnaby East"},
-{name: "Jennifer Blatherwick", riding: "Coquitlam-Maillardville"},
-{name: "Jodie Wickens", riding: "Coquitlam-Burke Mountain"},
-{name: "Susie Chant", riding: "North Vancouver-Seymour"},
-{name: "Diana Gibson", riding: "Oak Bay-Gordon Head"},
-{name: "Randene Neill", riding: "Powell River-Sunshine Coast"},
-{name: "Tamara Davidson", riding: "North Coast-Haida Gwaii"},
-{name: "Christine Boyle", riding: "Vancouver-Little Mountain"},
-{name: "Joan Phillip", riding: "Vancouver-Strathcona"},
-{name: "Terry Yung", riding: "Vancouver-Yaletown"},
-{name: "Garry Begg", riding: "Surrey-Guildford"},
-{name: "Amna Shah", riding: "Surrey City Centre"},
-{name: "Jessie Sunner", riding: "Surrey-Newton"},
-{name: "Darlene Rotchford", riding: "Esquimalt-Colwood"},
-{name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat"},
-{name: "Debra Toporowski", riding: "Cowichan Valley"},
-{name: "Stephanie Higginson", riding: "Ladysmith-Oceanside"},
-{name: "Steve Morissette", riding: "Kootenay-Monashee"},
-{name: "Harwinder Sandhu", riding: "Vernon-Lumby"},
-{name: "Ravi Parmar", riding: "Langford-Highlands"},
-{name: "Kelly Greene", riding: "Richmond-Steveston"},
-{name: "Rick Glumac", riding: "Port Moody-Burquitlam"},
-{name: "Spencer Chandra Herbert", riding: "Vancouver-West End"},
-{name: "Mable Elmore", riding: "Vancouver-Kensington"},
-{name: "George Chow", riding: "Vancouver-Fraserview"},
-{name: "Nina Krieger", riding: "Victoria-Swan Lake"},
-{name: "Brenda Bailey", riding: "Vancouver-South Granville"},
-{name: "Jagrup Brar", riding: "Surrey-Fleetwood"},
-{name: "Sunita Dhir", riding: "Vancouver-Langara"}
-],
-conservative: [
-{name: "Trevor Halford", riding: "Surrey-White Rock"},
-{name: "John Rustad", riding: "Nechako Lakes"},
-{name: "Aaliyah Warbus", riding: "Chilliwack-Cultus Lake"},
-{name: "Bruce Banman", riding: "Abbotsford South"},
-{name: "Sheldon Clare", riding: "Prince George-North Cariboo"},
-{name: "Peter Milobar", riding: "Kamloops Centre"},
-{name: "Teresa Wat", riding: "Richmond-Bridgeport"},
-{name: "Lorne Doerkson", riding: "Cariboo-Chilcotin"},
-{name: "Reann Gasper", riding: "Abbotsford-Mission"},
-{name: "Korky Neufeld", riding: "Abbotsford West"},
-{name: "Donegal Wilson", riding: "Boundary-Similkameen"},
-{name: "Sharon Hartwell", riding: "Bulkley Valley-Stikine"},
-{name: "Heather Maahs", riding: "Chilliwack North"},
-{name: "Scott McInnis", riding: "Columbia River-Revelstoke"},
-{name: "Brennan Day", riding: "Courtenay-Comox"},
-{name: "Ian Paton", riding: "Delta South"},
-{name: "Tony Luck", riding: "Fraser-Nicola"},
-{name: "Ward Stamer", riding: "Kamloops-North Thompson"},
-{name: "Kristina Loewen", riding: "Kelowna Centre"},
-{name: "Gavin Dew", riding: "Kelowna-Mission"},
-{name: "Pete Davis", riding: "Kootenay-Rockies"},
-{name: "Harman Bhangu", riding: "Langley-Abbotsford"},
-{name: "Misty Van Popta", riding: "Langley-Walnut Grove"},
-{name: "Jody Toor", riding: "Langley-Willowbrook"},
-{name: "Lawrence Mok", riding: "Maple Ridge East"},
-{name: "Anna Kindy", riding: "North Island"},
-{name: "Larry Neufeld", riding: "Peace River South"},
-{name: "Kiel Giddens", riding: "Prince George-Mackenzie"},
-{name: "Rosalyn Bird", riding: "Prince George-Valemount"},
-{name: "Hon Chan", riding: "Richmond Centre"},
-{name: "Steve Kooner", riding: "Richmond-Queensborough"},
-{name: "David Williams", riding: "Salmon Arm-Shuswap"},
-{name: "Claire Rattee", riding: "Skeena"},
-{name: "Mandeep Dhaliwal", riding: "Surrey North"},
-{name: "Linda Hepner", riding: "Surrey-Serpentine River"},
-{name: "Brent Chapman", riding: "Surrey South"},
-{name: "Bryan Tepper", riding: "Surrey-Panorama"},
-{name: "Macklin McCall", riding: "West Kelowna-Peachland"}  
-
-],
-green: [
-{name: "Jeremy Valeriote", riding: "West Vancouver-Sea to Sky"},
-{name: "Rob Botterell", riding: "Saanich North and the Islands"}
-],
-independent: [
-{name: "Tara Armstrong", riding: "Kelowna-Lake Country-Coldstream"},
-{name: "Amelia Boultbee", riding: "Penticton-Summerland"},
-{name: "Dallas Brodie", riding: "Vancouver-Quilchena"},
-{name: "Elenore Sturko", riding: "Surrey-Cloverdale"},
-{name: "Jordan Kealy", riding: "Peace River North"},
-]
+    ndp: [
+        {name: "David Eby", riding: "Vancouver-Point Grey"},
+        {name: "Niki Sharma", riding: "Vancouver-Hastings"},
+        {name: "Mike Farnworth", riding: "Port Coquitlam"},
+        {name: "Raj Chouhan", riding: "Burnaby-New Westminster"},
+        {name: "Adrian Dix", riding: "Vancouver-Renfrew"},
+        {name: "Ravi Kahlon", riding: "Delta North"},
+        {name: "Bowinn Ma", riding: "North Vancouver-Lonsdale"},
+        {name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows"},
+        {name: "Josie Osborne", riding: "Mid Island-Pacific Rim"},
+        {name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island"},
+        {name: "George Anderson", riding: "Nanaimo-Lantzville"},
+        {name: "Brittny Anderson", riding: "Kootenay Central"},
+        {name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam"},
+        {name: "Grace Lore", riding: "Victoria-Beacon Hill"},
+        {name: "Lana Popham", riding: "Saanich South"},
+        {name: "Anne Kang", riding: "Burnaby Centre"},
+        {name: "Janet Routledge", riding: "Burnaby North"},
+        {name: "Paul Choi", riding: "Burnaby South-Metrotown"},
+        {name: "Rohini Arora", riding: "Burnaby East"},
+        {name: "Jennifer Blatherwick", riding: "Coquitlam-Maillardville"},
+        {name: "Jodie Wickens", riding: "Coquitlam-Burke Mountain"},
+        {name: "Susie Chant", riding: "North Vancouver-Seymour"},
+        {name: "Diana Gibson", riding: "Oak Bay-Gordon Head"},
+        {name: "Randene Neill", riding: "Powell River-Sunshine Coast"},
+        {name: "Tamara Davidson", riding: "North Coast-Haida Gwaii"},
+        {name: "Christine Boyle", riding: "Vancouver-Little Mountain"},
+        {name: "Joan Phillip", riding: "Vancouver-Strathcona"},
+        {name: "Terry Yung", riding: "Vancouver-Yaletown"},
+        {name: "Garry Begg", riding: "Surrey-Guildford"},
+        {name: "Amna Shah", riding: "Surrey City Centre"},
+        {name: "Jessie Sunner", riding: "Surrey-Newton"},
+        {name: "Darlene Rotchford", riding: "Esquimalt-Colwood"},
+        {name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat"},
+        {name: "Debra Toporowski", riding: "Cowichan Valley"},
+        {name: "Stephanie Higginson", riding: "Ladysmith-Oceanside"},
+        {name: "Steve Morissette", riding: "Kootenay-Monashee"},
+        {name: "Harwinder Sandhu", riding: "Vernon-Lumby"},
+        {name: "Ravi Parmar", riding: "Langford-Highlands"},
+        {name: "Kelly Greene", riding: "Richmond-Steveston"},
+        {name: "Rick Glumac", riding: "Port Moody-Burquitlam"},
+        {name: "Spencer Chandra Herbert", riding: "Vancouver-West End"},
+        {name: "Mable Elmore", riding: "Vancouver-Kensington"},
+        {name: "George Chow", riding: "Vancouver-Fraserview"},
+        {name: "Nina Krieger", riding: "Victoria-Swan Lake"},
+        {name: "Brenda Bailey", riding: "Vancouver-South Granville"},
+        {name: "Jagrup Brar", riding: "Surrey-Fleetwood"},
+        {name: "Sunita Dhir", riding: "Vancouver-Langara"}
+    ],
+    conservative: [
+        {name: "Trevor Halford", riding: "Surrey-White Rock"},
+        {name: "John Rustad", riding: "Nechako Lakes"},
+        {name: "Aaliyah Warbus", riding: "Chilliwack-Cultus Lake"},
+        {name: "Bruce Banman", riding: "Abbotsford South"},
+        {name: "Sheldon Clare", riding: "Prince George-North Cariboo"},
+        {name: "Peter Milobar", riding: "Kamloops Centre"},
+        {name: "Teresa Wat", riding: "Richmond-Bridgeport"},
+        {name: "Lorne Doerkson", riding: "Cariboo-Chilcotin"},
+        {name: "Reann Gasper", riding: "Abbotsford-Mission"},
+        {name: "Korky Neufeld", riding: "Abbotsford West"},
+        {name: "Donegal Wilson", riding: "Boundary-Similkameen"},
+        {name: "Sharon Hartwell", riding: "Bulkley Valley-Stikine"},
+        {name: "Heather Maahs", riding: "Chilliwack North"},
+        {name: "Scott McInnis", riding: "Columbia River-Revelstoke"},
+        {name: "Brennan Day", riding: "Courtenay-Comox"},
+        {name: "Ian Paton", riding: "Delta South"},
+        {name: "Tony Luck", riding: "Fraser-Nicola"},
+        {name: "Ward Stamer", riding: "Kamloops-North Thompson"},
+        {name: "Kristina Loewen", riding: "Kelowna Centre"},
+        {name: "Gavin Dew", riding: "Kelowna-Mission"},
+        {name: "Pete Davis", riding: "Kootenay-Rockies"},
+        {name: "Harman Bhangu", riding: "Langley-Abbotsford"},
+        {name: "Misty Van Popta", riding: "Langley-Walnut Grove"},
+        {name: "Jody Toor", riding: "Langley-Willowbrook"},
+        {name: "Lawrence Mok", riding: "Maple Ridge East"},
+        {name: "Anna Kindy", riding: "North Island"},
+        {name: "Larry Neufeld", riding: "Peace River South"},
+        {name: "Kiel Giddens", riding: "Prince George-Mackenzie"},
+        {name: "Rosalyn Bird", riding: "Prince George-Valemount"},
+        {name: "Hon Chan", riding: "Richmond Centre"},
+        {name: "Steve Kooner", riding: "Richmond-Queensborough"},
+        {name: "David Williams", riding: "Salmon Arm-Shuswap"},
+        {name: "Claire Rattee", riding: "Skeena"},
+        {name: "Mandeep Dhaliwal", riding: "Surrey North"},
+        {name: "Linda Hepner", riding: "Surrey-Serpentine River"},
+        {name: "Brent Chapman", riding: "Surrey South"},
+        {name: "Bryan Tepper", riding: "Surrey-Panorama"},
+        {name: "Macklin McCall", riding: "West Kelowna-Peachland"}
+    ],
+    green: [
+        {name: "Jeremy Valeriote", riding: "West Vancouver-Sea to Sky"},
+        {name: "Rob Botterell", riding: "Saanich North and the Islands"}
+    ],
+    independent: [
+        {name: "Tara Armstrong", riding: "Kelowna-Lake Country-Coldstream"},
+        {name: "Amelia Boultbee", riding: "Penticton-Summerland"},
+        {name: "Dallas Brodie", riding: "Vancouver-Quilchena"},
+        {name: "Elenore Sturko", riding: "Surrey-Cloverdale"},
+        {name: "Jordan Kealy", riding: "Peace River North"}
+    ]
 };
 
 var currentParty = 'ndp';
@@ -515,7 +513,7 @@ function renderMLAGrid() {
 function renderLeaderboard() {
     var leaderboard = document.getElementById('leaderboard');
     var allMLAs = [];
-    var parties = ['ndp', 'conservative', 'green', 'independent', 'onebc'];
+    var parties = ['ndp', 'conservative', 'green', 'independent'];
     
     for (var p = 0; p < parties.length; p++) {
         var party = parties[p];
