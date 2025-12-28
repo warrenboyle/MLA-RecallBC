@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BC MLA Approval Tracker</title>
+    <title>BC MLA Check-In</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { background-color: #1a1a2e; }
@@ -15,323 +16,324 @@
             padding: 15px;
         }
         .container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { font-size: 1.8rem; margin-bottom: 10px; color: #e94560; }
-        h2 { color: #ffffff; font-size: 1.3rem; margin-bottom: 15px; }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin-bottom: 8px; color: #e94560; }
+        h2 { color: #ffffff; font-size: 1.3rem; margin-bottom: 10px; }
         .subtitle { color: #94a3b8; font-size: 1rem; }
-        
-        .countdown-section {
-            background-color: #1e2a4a;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        .countdown-title { text-align: center; margin-bottom: 20px; color: #e94560; font-size: 1.2rem; }
-        .countdown-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .countdown-item {
-            background-color: #162038;
-            padding: 15px 20px;
-            border-radius: 15px;
-            text-align: center;
-            min-width: 70px;
-        }
-        .countdown-number { font-size: 2rem; font-weight: bold; color: #e94560; }
-        .countdown-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
-        .target-date { text-align: center; margin-top: 15px; color: #94a3b8; font-size: 0.9rem; }
-        
-        .main-content { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        @media (min-width: 900px) {
-            .main-content { grid-template-columns: 1fr 380px; }
-            h1 { font-size: 2.5rem; }
-            .countdown-number { font-size: 3rem; }
-        }
-        
-        .voting-section, .leaderboard-section {
-            background-color: #1e2a4a;
-            border-radius: 20px;
-            padding: 20px;
-        }
-        
-        .party-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .party-tab {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            opacity: 0.6;
-        }
-        .party-tab.active { opacity: 1; }
-        .party-tab.ndp { background-color: #f97316; color: white; }
-        .party-tab.conservative { background-color: #3b82f6; color: white; }
-        .party-tab.green { background-color: #22c55e; color: white; }
-        .party-tab.independent { background-color: #8b5cf6; color: white; }
 
-        
-        .mla-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-            max-height: 450px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .mla-card {
-            padding: 12px;
-            border-radius: 10px;
-            background-color: #2d3a5a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-        .mla-card.voted {
-            background-color: #1e2a3a;
-            border: 1px solid #3d4a6a;
-        }
-        .mla-info { flex: 1; }
-        .mla-name { color: #ffffff; font-weight: 600; font-size: 0.9rem; }
-        .mla-riding { color: #94a3b8; font-size: 0.75rem; }
-        .mla-stats { color: #94a3b8; font-size: 0.75rem; margin-top: 3px; }
-        
-        .vote-buttons { display: flex; gap: 6px; align-items: center; }
-        .vote-btn {
-            width: 44px;
-            height: 44px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .vote-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .vote-btn.up { background-color: #22c55e; color: white; }
-        .vote-btn.down { background-color: #ef4444; color: white; }
-        .vote-btn.up:hover:not(:disabled) { background-color: #16a34a; }
-        .vote-btn.down:hover:not(:disabled) { background-color: #dc2626; }
-        
-        .voted-badge {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            background-color: #1e2a3a;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-        .voted-badge.up { color: #22c55e; }
-        .voted-badge.down { color: #ef4444; }
-        
-        .leaderboard-toggle {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .toggle-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            background-color: #2d3a5a;
-            color: #94a3b8;
-        }
-        .toggle-btn.active { background-color: #e94560; color: white; }
-        
-        .min-votes-note {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-bottom: 10px;
-        }
-        
-        .leaderboard-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background-color: #2d3a5a;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        .rank { font-size: 1.2rem; font-weight: bold; width: 28px; text-align: center; color: #ffffff; }
-        .rank-1 { color: #ffd700; }
-        .rank-2 { color: #c0c0c0; }
-        .rank-3 { color: #cd7f32; }
-        .leader-info { flex: 1; min-width: 0; }
-        .leader-name { font-weight: 600; font-size: 0.85rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .leader-party { font-size: 0.7rem; color: #94a3b8; }
-        .leader-stats { text-align: right; }
-        .leader-percent { font-size: 1.1rem; font-weight: bold; }
-        .leader-percent.high { color: #22c55e; }
-        .leader-percent.low { color: #ef4444; }
-        .leader-votes { font-size: 0.7rem; color: #94a3b8; }
-        
-        .party-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-right: 4px;
-        }
-        .party-badge.ndp { background-color: #f97316; }
-        .party-badge.conservative { background-color: #3b82f6; }
-        .party-badge.green { background-color: #22c55e; }
-        .party-badge.independent { background-color: #8b5cf6; }
+```
+    .instructions {
+        background-color: #1e2a4a;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .instructions h3 { color: #e94560; margin-bottom: 10px; font-size: 1.1rem; }
+    .instructions p { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; margin-bottom: 8px; }
+    .instructions .note { font-style: italic; color: #64748b; font-size: 0.85rem; }
+    
+    .main-content { display: grid; grid-template-columns: 1fr; gap: 25px; }
+    @media (min-width: 900px) {
+        .main-content { grid-template-columns: 1fr 380px; }
+        h1 { font-size: 2.5rem; }
+    }
+    
+    .voting-section, .leaderboard-section {
+        background-color: #1e2a4a;
+        border-radius: 20px;
+        padding: 20px;
+    }
+    
+    .party-tabs { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .party-tab {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+    .party-tab.active { opacity: 1; }
+    .party-tab.ndp { background-color: #f97316; color: white; }
+    .party-tab.conservative { background-color: #3b82f6; color: white; }
+    .party-tab.green { background-color: #22c55e; color: white; }
+    .party-tab.independent { background-color: #8b5cf6; color: white; }
+    
+    .mla-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        max-height: 500px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .mla-card {
+        padding: 12px;
+        border-radius: 10px;
+        background-color: #2d3a5a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+    .mla-card.voted {
+        background-color: #1e2a3a;
+        border: 1px solid #3d4a6a;
+    }
+    .mla-info { flex: 1; }
+    .mla-name { color: #ffffff; font-weight: 600; font-size: 0.9rem; }
+    .mla-title { color: #e94560; font-size: 0.7rem; font-weight: 500; }
+    .mla-riding { color: #94a3b8; font-size: 0.75rem; }
+    .mla-stats { color: #94a3b8; font-size: 0.75rem; margin-top: 3px; }
+    
+    .vote-buttons { display: flex; gap: 6px; align-items: center; }
+    .vote-btn {
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+    .vote-btn:active { transform: scale(0.95); }
+    .vote-btn.up { background-color: #22c55e; }
+    .vote-btn.down { background-color: #ef4444; }
+    
+    .voted-badge {
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    .voted-badge.up { background-color: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .voted-badge.down { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    
+    .info-box {
+        margin-top: 15px;
+        padding: 12px;
+        background-color: #162038;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .info-box .count { color: #e94560; font-weight: bold; }
+    .info-box .label { color: #94a3b8; font-size: 0.85rem; }
+    
+    .leaderboard-section h2 { margin-bottom: 15px; }
+    .toggle-container { display: flex; gap: 8px; margin-bottom: 15px; }
+    .toggle-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        background-color: #162038;
+        color: #94a3b8;
+    }
+    .toggle-btn.active { background-color: #e94560; color: white; }
+    
+    .min-votes-note {
+        text-align: center;
+        color: #64748b;
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+    .leaderboard-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background-color: #2d3a5a;
+        border-radius: 10px;
+    }
+    .rank {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #f97316;
+        min-width: 30px;
+    }
+    .lb-info { flex: 1; }
+    .lb-name { color: #ffffff; font-weight: 600; font-size: 0.9rem; }
+    .lb-detail { display: flex; align-items: center; gap: 6px; }
+    .party-badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+    .party-badge.ndp { background-color: #f97316; color: white; }
+    .party-badge.conservative { background-color: #3b82f6; color: white; }
+    .party-badge.green { background-color: #22c55e; color: white; }
+    .party-badge.independent { background-color: #8b5cf6; color: white; }
+    .lb-riding { color: #94a3b8; font-size: 0.75rem; }
+    .lb-score { text-align: right; }
+    .lb-percent { font-size: 1.1rem; font-weight: bold; }
+    .lb-percent.high { color: #22c55e; }
+    .lb-percent.low { color: #ef4444; }
+    .lb-votes { color: #94a3b8; font-size: 0.75rem; }
+    
+    .total-stats {
+        margin-top: 15px;
+        padding: 12px;
+        background-color: #162038;
+        border-radius: 10px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.85rem;
+    }
+    
+    .countdown-footer {
+        background-color: #1e2a4a;
+        border-radius: 15px;
+        padding: 15px 20px;
+        margin-top: 25px;
+        text-align: center;
+    }
+    .countdown-footer .days-count {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #e94560;
+    }
+    .countdown-footer .days-label {
+        color: #94a3b8;
+        font-size: 0.9rem;
+    }
+    .countdown-footer .target-info {
+        color: #64748b;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #64748b;
+    }
+</style>
+```
 
-        
-        .info-box {
-            background-color: #2a3a5a;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #94a3b8;
-        }
-        .info-box h4 { margin-bottom: 8px; color: #60a5fa; font-size: 0.9rem; }
-        .total-votes { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
-        .empty-leaderboard { text-align: center; padding: 20px; color: #94a3b8; }
-        
-        .your-votes-count {
-            text-align: center;
-            padding: 10px;
-            background-color: #2a3a5a;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>BC MLA Approval Tracker</h1>
-            <p class="subtitle">Rate your MLAs - Countdown to when recall petitions can begin</p>
+            <h1>🗳️ BC MLA Check-In</h1>
+            <p class="subtitle">How do you feel about your representatives?</p>
         </header>
-        
-        <section class="countdown-section">
-            <h2 class="countdown-title">Time Until Recall Petitions Can Begin</h2>
-            <div class="countdown-grid">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="days">0</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hours">0</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutes">0</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="seconds">0</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
+
+```
+    <div class="instructions">
+        <h3>How It Works</h3>
+        <p>Give each MLA a <strong>👍 thumbs up</strong> if you approve of their performance, or a <strong>👎 thumbs down</strong> if you don't.</p>
+        <p>You can rate each MLA once. MLAs need at least 5 votes to appear on the leaderboard.</p>
+        <p class="note">Not voting on an MLA simply means you don't have a strong opinion either way — and that's okay!</p>
+    </div>
+    
+    <div class="main-content">
+        <div class="voting-section">
+            <h2>Rate Your MLAs</h2>
+            <div class="party-tabs">
+                <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
+                <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (38)</button>
+                <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
+                <button class="party-tab independent" onclick="showParty('independent')">Independent (5)</button>
             </div>
-            <p class="target-date">Target Date: <strong>April 20, 2026</strong></p>
-        </section>
-        
-        <div class="main-content">
-            <section class="voting-section">
-                <h2>Rate Your MLAs</h2>
-                
-                <div class="your-votes-count" id="your-votes-count">
-                    You have rated <strong>0</strong> of 93 MLAs
-                </div>
-                
-                <div class="party-tabs">
-                    <button class="party-tab ndp active" onclick="showParty('ndp')">NDP (47)</button>
-                    <button class="party-tab conservative" onclick="showParty('conservative')">Conservative (38)</button>
-                    <button class="party-tab green" onclick="showParty('green')">Green (2)</button>
-                    <button class="party-tab independent" onclick="showParty('independent')">Independent (5)</button>
-                </div>
-                
-                <div class="mla-grid" id="mla-grid"></div>
-                
-                <div class="info-box">
-                    <h4>About BC Recall Elections</h4>
-                    <p>Under BC Recall and Initiative Act, voters can petition to recall their MLA 18 months after an election. Success requires 40% of registered voters in that riding to sign within 60 days.</p>
-                </div>
-            </section>
             
-            <section class="leaderboard-section">
-                <h2>Leaderboard</h2>
-                <div class="leaderboard-toggle">
-                    <button class="toggle-btn active" id="btn-approved" onclick="setLeaderboard('approved')">Most Approved</button>
-                    <button class="toggle-btn" id="btn-disapproved" onclick="setLeaderboard('disapproved')">Least Approved</button>
-                </div>
-                <div class="min-votes-note">Minimum 5 votes to appear</div>
-                <div id="leaderboard"><div class="empty-leaderboard">No votes yet</div></div>
-                <div class="total-votes" id="total-votes"></div>
-            </section>
+            <div class="mla-grid" id="mla-grid"></div>
+            
+            <div class="info-box">
+                <span class="label">You have rated </span>
+                <span class="count" id="your-votes-count">0</span>
+                <span class="label"> of 92 MLAs</span>
+            </div>
+        </div>
+        
+        <div class="leaderboard-section">
+            <h2>Leaderboard</h2>
+            <div class="toggle-container">
+                <button class="toggle-btn active" id="btn-approved" onclick="setLeaderboardMode('approved')">Most Approved</button>
+                <button class="toggle-btn" id="btn-disapproved" onclick="setLeaderboardMode('disapproved')">Least Approved</button>
+            </div>
+            <p class="min-votes-note">Minimum 5 votes to appear</p>
+            <div class="leaderboard-list" id="leaderboard"></div>
+            <div class="total-stats" id="total-stats"></div>
         </div>
     </div>
     
+    <div class="countdown-footer">
+        <div class="days-count" id="days-remaining">--</div>
+        <div class="days-label">days until recall petitions can begin</div>
+        <div class="target-info">Target: April 20, 2026 (18 months after Oct 19, 2024 election)</div>
+    </div>
+</div>
+```
+
 <script>
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU2vj_QH2ratoPVeWXVrYbJRfvGpMedh5Xi22rYukItEfQ4/exec';
 var MIN_VOTES = 5;
 
 var MLAs = {
     ndp: [
-        {name: "David Eby", riding: "Vancouver-Point Grey"},
-        {name: "Niki Sharma", riding: "Vancouver-Hastings"},
-        {name: "Mike Farnworth", riding: "Port Coquitlam"},
-        {name: "Raj Chouhan", riding: "Burnaby-New Westminster"},
-        {name: "Adrian Dix", riding: "Vancouver-Renfrew"},
-        {name: "Ravi Kahlon", riding: "Delta North"},
-        {name: "Bowinn Ma", riding: "North Vancouver-Lonsdale"},
-        {name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows"},
-        {name: "Josie Osborne", riding: "Mid Island-Pacific Rim"},
-        {name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island"},
-        {name: "George Anderson", riding: "Nanaimo-Lantzville"},
-        {name: "Brittny Anderson", riding: "Kootenay Central"},
-        {name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam"},
-        {name: "Grace Lore", riding: "Victoria-Beacon Hill"},
-        {name: "Lana Popham", riding: "Saanich South"},
-        {name: "Anne Kang", riding: "Burnaby Centre"},
+        {name: "David Eby", riding: "Vancouver-Point Grey", title: "Premier"},
+        {name: "Niki Sharma", riding: "Vancouver-Hastings", title: "Attorney General & Deputy Premier"},
+        {name: "Mike Farnworth", riding: "Port Coquitlam", title: "Minister of Transportation and Transit"},
+        {name: "Raj Chouhan", riding: "Burnaby-New Westminster", title: "Speaker"},
+        {name: "Adrian Dix", riding: "Vancouver-Renfrew", title: "Minister of Energy and Climate Solutions"},
+        {name: "Ravi Kahlon", riding: "Delta North", title: "Minister of Jobs and Economic Growth"},
+        {name: "Bowinn Ma", riding: "North Vancouver-Lonsdale", title: "Minister of Infrastructure"},
+        {name: "Lisa Beare", riding: "Maple Ridge-Pitt Meadows", title: "Minister of Education and Child Care"},
+        {name: "Josie Osborne", riding: "Mid Island-Pacific Rim", title: "Minister of Health"},
+        {name: "Sheila Malcolmson", riding: "Nanaimo-Gabriola Island", title: "Minister of Social Development and Poverty Reduction"},
+        {name: "George Anderson", riding: "Nanaimo-Lantzville", title: "Parliamentary Secretary for Transit"},
+        {name: "Brittny Anderson", riding: "Kootenay Central", title: "Minister of State for Local Governments and Rural Communities"},
+        {name: "Jennifer Whiteside", riding: "New Westminster-Coquitlam", title: "Minister of Labour"},
+        {name: "Grace Lore", riding: "Victoria-Beacon Hill", title: "Minister without Portfolio"},
+        {name: "Lana Popham", riding: "Saanich South", title: "Minister of Agriculture and Food"},
+        {name: "Anne Kang", riding: "Burnaby Centre", title: "Minister of Tourism, Arts, Culture and Sport"},
         {name: "Janet Routledge", riding: "Burnaby North"},
-        {name: "Paul Choi", riding: "Burnaby South-Metrotown"},
-        {name: "Rohini Arora", riding: "Burnaby East"},
-        {name: "Jennifer Blatherwick", riding: "Coquitlam-Maillardville"},
-        {name: "Jodie Wickens", riding: "Coquitlam-Burke Mountain"},
-        {name: "Susie Chant", riding: "North Vancouver-Seymour"},
-        {name: "Diana Gibson", riding: "Oak Bay-Gordon Head"},
-        {name: "Randene Neill", riding: "Powell River-Sunshine Coast"},
-        {name: "Tamara Davidson", riding: "North Coast-Haida Gwaii"},
-        {name: "Christine Boyle", riding: "Vancouver-Little Mountain"},
-        {name: "Joan Phillip", riding: "Vancouver-Strathcona"},
-        {name: "Terry Yung", riding: "Vancouver-Yaletown"},
-        {name: "Garry Begg", riding: "Surrey-Guildford"},
-        {name: "Amna Shah", riding: "Surrey City Centre"},
-        {name: "Jessie Sunner", riding: "Surrey-Newton"},
-        {name: "Darlene Rotchford", riding: "Esquimalt-Colwood"},
-        {name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat"},
-        {name: "Debra Toporowski", riding: "Cowichan Valley"},
-        {name: "Stephanie Higginson", riding: "Ladysmith-Oceanside"},
-        {name: "Steve Morissette", riding: "Kootenay-Monashee"},
-        {name: "Harwinder Sandhu", riding: "Vernon-Lumby"},
-        {name: "Ravi Parmar", riding: "Langford-Highlands"},
-        {name: "Kelly Greene", riding: "Richmond-Steveston"},
-        {name: "Rick Glumac", riding: "Port Moody-Burquitlam"},
-        {name: "Spencer Chandra Herbert", riding: "Vancouver-West End"},
+        {name: "Paul Choi", riding: "Burnaby South-Metrotown", title: "Parliamentary Secretary for Trade"},
+        {name: "Rohini Arora", riding: "Burnaby East", title: "Parliamentary Secretary for Child Care"},
+        {name: "Jennifer Blatherwick", riding: "Coquitlam-Maillardville", title: "Parliamentary Secretary for Gender Equity"},
+        {name: "Jodie Wickens", riding: "Coquitlam-Burke Mountain", title: "Minister of Children and Family Development"},
+        {name: "Susie Chant", riding: "North Vancouver-Seymour", title: "Parliamentary Secretary for Seniors' Services"},
+        {name: "Diana Gibson", riding: "Oak Bay-Gordon Head", title: "Minister of Citizens' Services"},
+        {name: "Randene Neill", riding: "Powell River-Sunshine Coast", title: "Minister of Water, Land and Resource Stewardship"},
+        {name: "Tamara Davidson", riding: "North Coast-Haida Gwaii", title: "Minister of Environment and Parks"},
+        {name: "Christine Boyle", riding: "Vancouver-Little Mountain", title: "Minister of Housing and Municipal Affairs"},
+        {name: "Joan Phillip", riding: "Vancouver-Strathcona", title: "Parliamentary Secretary for Community Development"},
+        {name: "Terry Yung", riding: "Vancouver-Yaletown", title: "Minister of State for Community Safety"},
+        {name: "Garry Begg", riding: "Surrey-Guildford", title: "Parliamentary Secretary for Surrey Infrastructure"},
+        {name: "Amna Shah", riding: "Surrey City Centre", title: "Parliamentary Secretary for Anti-Racism Initiatives"},
+        {name: "Jessie Sunner", riding: "Surrey-Newton", title: "Minister of Post-Secondary Education and Future Skills"},
+        {name: "Darlene Rotchford", riding: "Esquimalt-Colwood", title: "Parliamentary Secretary for Veterans Affairs"},
+        {name: "Dana Lajeunesse", riding: "Juan de Fuca-Malahat", title: "Parliamentary Secretary for Accessibility"},
+        {name: "Debra Toporowski", riding: "Cowichan Valley", title: "Parliamentary Secretary for Rural Health"},
+        {name: "Stephanie Higginson", riding: "Ladysmith-Oceanside", title: "Parliamentary Secretary for Primary Care Access"},
+        {name: "Steve Morissette", riding: "Kootenay-Monashee", title: "Parliamentary Secretary for Rural Development"},
+        {name: "Harwinder Sandhu", riding: "Vernon-Lumby", title: "Parliamentary Secretary for Agriculture"},
+        {name: "Ravi Parmar", riding: "Langford-Highlands", title: "Minister of Forests"},
+        {name: "Kelly Greene", riding: "Richmond-Steveston", title: "Minister of Emergency Management and Climate Readiness"},
+        {name: "Rick Glumac", riding: "Port Moody-Burquitlam", title: "Minister of State for AI and New Technologies"},
+        {name: "Spencer Chandra Herbert", riding: "Vancouver-West End", title: "Minister of Indigenous Relations and Reconciliation"},
         {name: "Mable Elmore", riding: "Vancouver-Kensington"},
-        {name: "George Chow", riding: "Vancouver-Fraserview"},
-        {name: "Nina Krieger", riding: "Victoria-Swan Lake"},
-        {name: "Brenda Bailey", riding: "Vancouver-South Granville"},
-        {name: "Jagrup Brar", riding: "Surrey-Fleetwood"},
-        {name: "Sunita Dhir", riding: "Vancouver-Langara"}
+        {name: "George Chow", riding: "Vancouver-Fraserview", title: "Parliamentary Secretary for Downtown Eastside"},
+        {name: "Nina Krieger", riding: "Victoria-Swan Lake", title: "Minister of Public Safety and Solicitor General"},
+        {name: "Brenda Bailey", riding: "Vancouver-South Granville", title: "Minister of Finance"},
+        {name: "Jagrup Brar", riding: "Surrey-Fleetwood", title: "Minister of Mining and Critical Minerals"},
+        {name: "Sunita Dhir", riding: "Vancouver-Langara", title: "Parliamentary Secretary for International Credentials"}
     ],
     conservative: [
         {name: "Trevor Halford", riding: "Surrey-White Rock"},
-        {name: "John Rustad", riding: "Nechako Lakes"},
+        {name: "John Rustad", riding: "Nechako Lakes", title: "Leader of the Official Opposition"},
         {name: "Aaliyah Warbus", riding: "Chilliwack-Cultus Lake"},
         {name: "Bruce Banman", riding: "Abbotsford South"},
         {name: "Sheldon Clare", riding: "Prince George-North Cariboo"},
@@ -387,7 +389,6 @@ var leaderboardMode = 'approved';
 var votes = {};
 var myVotes = {};
 
-// Load user's previous votes from localStorage
 try { 
     var saved = localStorage.getItem('myMLAVotes');
     if (saved) myVotes = JSON.parse(saved);
@@ -397,64 +398,12 @@ function saveMyVotes() {
     try { localStorage.setItem('myMLAVotes', JSON.stringify(myVotes)); } catch(e) {}
 }
 
-function updateCountdown() {
-    var target = new Date(2026, 3, 20, 0, 0, 0);
-    var now = new Date();
-    var diff = target - now;
-    
-    if (diff <= 0) {
-        document.getElementById('days').innerText = '0';
-        document.getElementById('hours').innerText = '0';
-        document.getElementById('minutes').innerText = '0';
-        document.getElementById('seconds').innerText = '0';
-        return;
-    }
-    
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    document.getElementById('days').innerText = days;
-    document.getElementById('hours').innerText = hours;
-    document.getElementById('minutes').innerText = minutes;
-    document.getElementById('seconds').innerText = seconds;
-}
-
 function hasVoted(key) {
-    return myVotes[key] !== undefined;
+    return myVotes.hasOwnProperty(key);
 }
 
 function getMyVote(key) {
-    return myVotes[key];
-}
-
-function countMyVotes() {
-    var count = 0;
-    for (var key in myVotes) count++;
-    return count;
-}
-
-function showParty(party) {
-    currentParty = party;
-    var tabs = document.querySelectorAll('.party-tab');
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-        if (tabs[i].className.indexOf(party) > -1) tabs[i].classList.add('active');
-    }
-    renderMLAGrid();
-}
-
-function setLeaderboard(mode) {
-    leaderboardMode = mode;
-    document.getElementById('btn-approved').classList.remove('active');
-    document.getElementById('btn-disapproved').classList.remove('active');
-    if (mode === 'approved') {
-        document.getElementById('btn-approved').classList.add('active');
-    } else {
-        document.getElementById('btn-disapproved').classList.add('active');
-    }
-    renderLeaderboard();
+    return myVotes[key] || null;
 }
 
 function getVoteData(mla) {
@@ -465,9 +414,36 @@ function getVoteData(mla) {
     return {up: data.up, down: data.down, total: total, percent: percent};
 }
 
+function showParty(party) {
+    currentParty = party;
+    var tabs = document.querySelectorAll('.party-tab');
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+        if (tabs[i].classList.contains(party)) {
+            tabs[i].classList.add('active');
+        }
+    }
+    renderMLAGrid();
+}
+
+function setLeaderboardMode(mode) {
+    leaderboardMode = mode;
+    document.getElementById('btn-approved').classList.toggle('active', mode === 'approved');
+    document.getElementById('btn-disapproved').classList.toggle('active', mode === 'disapproved');
+    renderLeaderboard();
+}
+
 function updateYourVotesCount() {
-    var count = countMyVotes();
-    document.getElementById('your-votes-count').innerHTML = 'You have rated <strong>' + count + '</strong> of 93 MLAs';
+    var count = Object.keys(myVotes).length;
+    document.getElementById('your-votes-count').textContent = count;
+}
+
+function updateDaysRemaining() {
+    var target = new Date('2026-04-20T00:00:00');
+    var now = new Date();
+    var diff = target - now;
+    var days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    document.getElementById('days-remaining').textContent = days;
 }
 
 function renderMLAGrid() {
@@ -486,6 +462,9 @@ function renderMLAGrid() {
         html += '<div class="mla-card' + (voted ? ' voted' : '') + '">';
         html += '<div class="mla-info">';
         html += '<div class="mla-name">' + mla.name + '</div>';
+        if (mla.title) {
+            html += '<div class="mla-title">' + mla.title + '</div>';
+        }
         html += '<div class="mla-riding">' + mla.riding + '</div>';
         html += '<div class="mla-stats">' + statsText + '</div>';
         html += '</div>';
@@ -528,36 +507,37 @@ function renderLeaderboard() {
     }
     
     if (leaderboardMode === 'approved') {
-        allMLAs.sort(function(a, b) { return b.percent - a.percent || b.total - a.total; });
+        allMLAs.sort(function(a, b) { return b.percent - a.percent; });
     } else {
-        allMLAs.sort(function(a, b) { return a.percent - b.percent || b.total - a.total; });
+        allMLAs.sort(function(a, b) { return a.percent - b.percent; });
     }
     
     var top10 = allMLAs.slice(0, 10);
+    var html = '';
     
     if (top10.length === 0) {
-        leaderboard.innerHTML = '<div class="empty-leaderboard">Need ' + MIN_VOTES + '+ votes to rank</div>';
-        document.getElementById('total-votes').innerText = '';
-        return;
+        html = '<div class="empty-state">No MLAs have reached ' + MIN_VOTES + ' votes yet. Start voting!</div>';
+    } else {
+        for (var i = 0; i < top10.length; i++) {
+            var mla = top10[i];
+            var percentClass = mla.percent >= 50 ? 'high' : 'low';
+            html += '<div class="leaderboard-item">';
+            html += '<div class="rank">' + (i + 1) + '</div>';
+            html += '<div class="lb-info">';
+            html += '<div class="lb-name">' + mla.name + '</div>';
+            html += '<div class="lb-detail">';
+            html += '<span class="party-badge ' + mla.party + '">' + mla.party.toUpperCase() + '</span>';
+            html += '<span class="lb-riding">' + mla.riding + '</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="lb-score">';
+            html += '<div class="lb-percent ' + percentClass + '">' + mla.percent + '%</div>';
+            html += '<div class="lb-votes">' + mla.total + ' votes</div>';
+            html += '</div>';
+            html += '</div>';
+        }
     }
     
-    var html = '';
-    for (var i = 0; i < top10.length; i++) {
-        var mla = top10[i];
-        var colorClass = mla.percent >= 50 ? 'high' : 'low';
-        
-        html += '<div class="leaderboard-item">';
-        html += '<span class="rank rank-' + (i+1) + '">' + (i+1) + '</span>';
-        html += '<div class="leader-info">';
-        html += '<div class="leader-name">' + mla.name + '</div>';
-        html += '<div class="leader-party"><span class="party-badge ' + mla.party + '">' + mla.party.toUpperCase() + '</span>' + mla.riding + '</div>';
-        html += '</div>';
-        html += '<div class="leader-stats">';
-        html += '<div class="leader-percent ' + colorClass + '">' + mla.percent + '%</div>';
-        html += '<div class="leader-votes">' + mla.total + ' votes</div>';
-        html += '</div>';
-        html += '</div>';
-    }
     leaderboard.innerHTML = html;
     
     var totalUp = 0, totalDown = 0;
@@ -565,22 +545,19 @@ function renderLeaderboard() {
         totalUp += votes[key].up || 0;
         totalDown += votes[key].down || 0;
     }
-    document.getElementById('total-votes').innerText = 'Total: ' + (totalUp + totalDown) + ' votes (' + totalUp + ' up, ' + totalDown + ' down)';
+    document.getElementById('total-stats').innerHTML = 'Total: ' + (totalUp + totalDown) + ' votes (' + totalUp + ' up, ' + totalDown + ' down)';
 }
 
 function vote(name, riding, voteType) {
     var key = name + '|' + riding;
     
-    // Check if already voted
     if (hasVoted(key)) {
         return;
     }
     
-    // Record user's vote locally
     myVotes[key] = voteType;
     saveMyVotes();
     
-    // Update global votes
     if (!votes[key]) votes[key] = {up: 0, down: 0};
     if (voteType === 'up') {
         votes[key].up++;
@@ -591,15 +568,17 @@ function vote(name, riding, voteType) {
     renderMLAGrid();
     renderLeaderboard();
     
-    // Send to Google Sheets
     var xhr = new XMLHttpRequest();
     var url = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
+    console.log('Sending vote:', url);
+    xhr.onload = function() { console.log('Vote sent OK:', key); };
+    xhr.onerror = function() { console.log('Vote FAILED:', key); };
     xhr.open('GET', url, true);
     xhr.send();
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+updateDaysRemaining();
+setInterval(updateDaysRemaining, 60000);
 renderMLAGrid();
 renderLeaderboard();
 
@@ -609,15 +588,18 @@ setTimeout(function() {
     xhr.onload = function() {
         try {
             var data = JSON.parse(xhr.responseText);
-            if (data.success && data.votes) {
+            if (data.votes) {
                 votes = data.votes;
                 renderMLAGrid();
                 renderLeaderboard();
             }
-        } catch(e) {}
+        } catch(e) {
+            console.log('Error loading votes:', e);
+        }
     };
     xhr.send();
 }, 500);
 </script>
+
 </body>
 </html>
