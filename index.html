@@ -277,6 +277,7 @@
     
 <script>
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzF9qsif0aHZNt4ST_42RU2vj_QH2ratoPVeWXVrYbJRfvGpMedh5Xi22rYukItEfQ4/exec';
+                  
 var MIN_VOTES = 5;
 
 var MLAs = {
@@ -568,20 +569,16 @@ function renderLeaderboard() {
     }
     document.getElementById('total-votes').innerText = 'Total: ' + (totalUp + totalDown) + ' votes (' + totalUp + ' up, ' + totalDown + ' down)';
 }
-
 function vote(name, riding, voteType) {
     var key = name + '|' + riding;
     
-    // Check if already voted
     if (hasVoted(key)) {
         return;
     }
     
-    // Record user's vote locally
     myVotes[key] = voteType;
     saveMyVotes();
     
-    // Update global votes
     if (!votes[key]) votes[key] = {up: 0, down: 0};
     if (voteType === 'up') {
         votes[key].up++;
@@ -592,9 +589,11 @@ function vote(name, riding, voteType) {
     renderMLAGrid();
     renderLeaderboard();
     
-    // Send to Google Sheets
-    var img = new Image();
-    img.src = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
+    // Send to Google Sheets using XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    var url = SCRIPT_URL + '?action=vote&mla=' + encodeURIComponent(key) + '&type=' + voteType + '&_=' + Date.now();
+    xhr.open('GET', url, true);
+    xhr.send();
 }
 
 updateCountdown();
